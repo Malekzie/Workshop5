@@ -18,6 +18,13 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>()
     .AddDefaultTokenProviders();
 
 builder.Services.AddScoped<IEmailSender, EmailSender>();
+
+// Sets Email to be optional as per requirements
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    options.User.RequireUniqueEmail = false;
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

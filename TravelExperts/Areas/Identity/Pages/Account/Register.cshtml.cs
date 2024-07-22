@@ -111,8 +111,8 @@ namespace TravelExperts.Areas.Identity.Pages.Account
             public string CustPostal { get; set; }
             public string CustCountry { get; set; }
             public string CustHomePhone { get; set; }
-            public string CustBusPhone { get; set; }
-            public string CustEmail { get; set; }
+            public string? CustBusPhone { get; set; }
+            public string? CustEmail { get; set; }
 
         }
 
@@ -133,6 +133,17 @@ namespace TravelExperts.Areas.Identity.Pages.Account
             {
                 var user = CreateUser();
                 // Create Inputs based on fields for Customer Table
+
+                user.CustFirstName = Input.CustFirstName;
+                user.CustLastName = Input.CustLastName;
+                user.CustAddress = Input.CustAddress;
+                user.CustCity = Input.CustCity;
+                user.CustProv = Input.CustProv;
+                user.CustPostal = Input.CustPostal;
+                user.CustCountry = Input.CustCountry;
+                user.CustHomePhone = Input.CustHomePhone;
+                user.CustBusPhone = Input.CustBusPhone;
+                user.Email = Input.CustEmail;
 
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
