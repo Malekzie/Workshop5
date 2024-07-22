@@ -2,13 +2,14 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using TravelExperts.DataAccess.Models;
 
 
 namespace TravelExperts.DataAccess.Data;
 
-public partial class TravelExpertsContext : DbContext
+public partial class TravelExpertsContext : IdentityDbContext
 {
     public TravelExpertsContext(DbContextOptions<TravelExpertsContext> options)
         : base(options)
@@ -29,14 +30,11 @@ public partial class TravelExpertsContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+
+        base.OnModelCreating(modelBuilder);
+
         modelBuilder.Entity<Customer>(entity =>
         {
-            entity.HasKey(e => e.CustomerId)
-                .HasName("aaaaaCustomers_PK")
-                .IsClustered(false);
-
-            entity.HasIndex(e => e.AgentId, "EmployeesCustomers");
-
             entity.Property(e => e.CustAddress)
                 .IsRequired()
                 .HasMaxLength(75);
