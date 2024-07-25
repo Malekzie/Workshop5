@@ -94,7 +94,7 @@
 
                     <!-- Postal Code -->
                     <div class="form-floating mb-3 col-6">
-                        <input asp-for="Input.CustPostal" class="form-control" placeholder="Postal Code" />
+                        <input asp-for="Input.CustPostal" class="form-control" placeholder="Postal Code" maxlength="7"/>
                         <label asp-for="Input.CustPostal" class="ms-2 text-muted">Postal Code <span class="text-danger">*</span></label>
                         <span asp-validation-for="Input.CustPostal" class="text-danger"></span>
                     </div>
