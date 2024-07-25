@@ -16,9 +16,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using TravelExperts.DataAccess.Models;
+using TravelExperts.Models.ViewModel;
 using TravelExperts.Utils;
 
 namespace TravelExperts.Areas.Identity.Pages.Account
@@ -79,7 +81,6 @@ namespace TravelExperts.Areas.Identity.Pages.Account
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [Required]
             [EmailAddress]
             [Display(Name = "Email")]
             public string Email { get; set; }
@@ -103,16 +104,35 @@ namespace TravelExperts.Areas.Identity.Pages.Account
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
 
+            public List<ProvinceVM>? Provinces { get; set; }
+            public IEnumerable<SelectListItem> ProvinceList { get; set; }
+
+            [Required(ErrorMessage ="First name is required. Please enter your first name")]
             public string CustFirstName { get; set; }
+
+            [Required(ErrorMessage ="Last name is required. Please enter your last name")]
             public string CustLastName { get; set; }
+
+            [Required(ErrorMessage ="Address is required")]
             public string CustAddress { get; set; }
+
+            [Required(ErrorMessage ="City is required")]
             public string CustCity { get; set; }
+
+            [Required(ErrorMessage ="Please Enter your Province")]
             public string CustProv { get; set; }
+
+            [Required(ErrorMessage ="Postal Code is required")]
             public string CustPostal { get; set; }
+
+            [Required(ErrorMessage ="Country is required")]
             public string CustCountry { get; set; }
+
+            [Required(ErrorMessage ="Your Home Phone number is required. Please enter your phone number.")]
             public string CustHomePhone { get; set; }
-            public string CustBusPhone { get; set; }
-            public string CustEmail { get; set; }
+
+            public string? CustBusPhone { get; set; }
+            public string? CustEmail { get; set; }
 
         }
 
@@ -120,6 +140,15 @@ namespace TravelExperts.Areas.Identity.Pages.Account
         public async Task OnGetAsync(string returnUrl = null)
         {
             await EnsureRolesExistAsync();
+
+            Input = new()
+            {
+                ProvinceList = StaticDefinition.ProvinceList.Select(p => new SelectListItem 
+                { 
+                    Value = p.Value, 
+                    Text = p.DisplayName 
+                }),
+            };
 
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
@@ -133,6 +162,17 @@ namespace TravelExperts.Areas.Identity.Pages.Account
             {
                 var user = CreateUser();
                 // Create Inputs based on fields for Customer Table
+
+                user.CustFirstName = Input.CustFirstName;
+                user.CustLastName = Input.CustLastName;
+                user.CustAddress = Input.CustAddress;
+                user.CustCity = Input.CustCity;
+                user.CustProv = Input.CustProv;
+                user.CustPostal = Input.CustPostal;
+                user.CustCountry = Input.CustCountry;
+                user.CustHomePhone = Input.CustHomePhone;
+                user.CustBusPhone = Input.CustBusPhone;
+                user.CustEmail = Input.CustEmail;
 
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);

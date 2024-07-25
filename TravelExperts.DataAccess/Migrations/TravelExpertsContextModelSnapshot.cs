@@ -265,7 +265,7 @@ namespace TravelExperts.DataAccess.Migrations
 
                     SqlServerKeyBuilderExtensions.IsClustered(b.HasKey("PackageId"), false);
 
-                    b.ToTable("Packages");
+                    b.ToTable("Packages", (string)null);
                 });
 
             modelBuilder.Entity("TravelExperts.DataAccess.Models.PackagesProductsSupplier", b =>
@@ -317,7 +317,7 @@ namespace TravelExperts.DataAccess.Migrations
 
                     b.HasIndex(new[] { "ProductId" }, "ProductId");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
                 });
 
             modelBuilder.Entity("TravelExperts.DataAccess.Models.ProductsSupplier", b =>
@@ -373,7 +373,7 @@ namespace TravelExperts.DataAccess.Migrations
 
                     b.HasIndex(new[] { "SupplierId" }, "SupplierId");
 
-                    b.ToTable("Suppliers");
+                    b.ToTable("Suppliers", (string)null);
                 });
 
             modelBuilder.Entity("TravelExperts.DataAccess.Models.Customer", b =>
