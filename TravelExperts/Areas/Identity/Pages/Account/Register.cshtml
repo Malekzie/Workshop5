@@ -87,9 +87,9 @@
 
                     <!-- Province -->
                     <div class="form-floating mb-3 col-6">
-                        <input asp-for="Input.CustProv" class="form-control" placeholder="Province" />
-                        <label asp-for="Input.CustProv" class="ms-2 text-muted">Province <span class="text-danger">*</span></label>
-                        <span asp-validation-for="Input.CustProv" class="text-danger"></span>
+                        <select asp-for="Input.CustProv" asp-items="@Model.Input.ProvinceList" class="form-select">
+                            <option disabled selected>Select a province</option>
+                        </select>
                     </div>
 
                     <!-- Postal Code -->

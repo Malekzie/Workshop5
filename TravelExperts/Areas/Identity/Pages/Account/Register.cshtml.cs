@@ -16,9 +16,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using TravelExperts.DataAccess.Models;
+using TravelExperts.Models.ViewModel;
 using TravelExperts.Utils;
 
 namespace TravelExperts.Areas.Identity.Pages.Account
@@ -103,6 +105,9 @@ namespace TravelExperts.Areas.Identity.Pages.Account
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
 
+            public List<ProvinceVM>? Provinces { get; set; }
+            public IEnumerable<SelectListItem> ProvinceList { get; set; }
+
             public string CustFirstName { get; set; }
             public string CustLastName { get; set; }
             public string CustAddress { get; set; }
@@ -120,6 +125,15 @@ namespace TravelExperts.Areas.Identity.Pages.Account
         public async Task OnGetAsync(string returnUrl = null)
         {
             await EnsureRolesExistAsync();
+
+            Input = new()
+            {
+                ProvinceList = StaticDefinition.ProvinceList.Select(p => new SelectListItem 
+                { 
+                    Value = p.Value, 
+                    Text = p.DisplayName 
+                }),
+            };
 
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
@@ -143,7 +157,7 @@ namespace TravelExperts.Areas.Identity.Pages.Account
                 user.CustCountry = Input.CustCountry;
                 user.CustHomePhone = Input.CustHomePhone;
                 user.CustBusPhone = Input.CustBusPhone;
-                user.Email = Input.CustEmail;
+                user.CustEmail = Input.CustEmail;
 
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
