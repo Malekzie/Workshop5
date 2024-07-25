@@ -107,14 +107,30 @@ namespace TravelExperts.Areas.Identity.Pages.Account
             public List<ProvinceVM>? Provinces { get; set; }
             public IEnumerable<SelectListItem> ProvinceList { get; set; }
 
+            [Required(ErrorMessage ="First name is required. Please enter your first name")]
             public string CustFirstName { get; set; }
+
+            [Required(ErrorMessage ="Last name is required. Please enter your last name")]
             public string CustLastName { get; set; }
+
+            [Required(ErrorMessage ="Address is required")]
             public string CustAddress { get; set; }
+
+            [Required(ErrorMessage ="City is required")]
             public string CustCity { get; set; }
+
+            [Required(ErrorMessage ="Please Enter your Province")]
             public string CustProv { get; set; }
+
+            [Required(ErrorMessage ="Postal Code is required")]
             public string CustPostal { get; set; }
+
+            [Required(ErrorMessage ="Country is required")]
             public string CustCountry { get; set; }
+
+            [Required(ErrorMessage ="Your Home Phone number is required. Please enter your phone number.")]
             public string CustHomePhone { get; set; }
+
             public string? CustBusPhone { get; set; }
             public string? CustEmail { get; set; }
 
