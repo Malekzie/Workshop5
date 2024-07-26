@@ -2,9 +2,6 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
-using TravelExperts.DataAccess.Models;
 
 
 namespace TravelExperts.DataAccess.Data;

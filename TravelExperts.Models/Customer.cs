@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using System.ComponentModel.DataAnnotations;
-
-namespace TravelExperts.DataAccess.Models
+﻿namespace TravelExperts.DataAccess.Models
 {
     public partial class Customer : IdentityUser
     {
