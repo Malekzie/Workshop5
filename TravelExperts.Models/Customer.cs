@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using System.ComponentModel.DataAnnotations;
-
-namespace TravelExperts.DataAccess.Models
+﻿namespace TravelExperts.DataAccess.Models
 {
     public partial class Customer : IdentityUser
     {
@@ -55,7 +52,7 @@ namespace TravelExperts.DataAccess.Models
         public string? CustEmail { get; set; }
 
         public int? AgentId { get; set; }
-           
+
         // Override ASP.NET Identity's Email property to make it optional
         public override string Email { get; set; } = null;
     }
