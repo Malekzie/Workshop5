@@ -52,7 +52,7 @@
         public string? CustEmail { get; set; }
 
         public int? AgentId { get; set; }
-           
+
         // Override ASP.NET Identity's Email property to make it optional
         public override string Email { get; set; } = null;
     }
