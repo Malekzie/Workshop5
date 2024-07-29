@@ -6,12 +6,7 @@ using System.Threading.Tasks;
 
 namespace TravelExperts.DataAccess.Repository.IRepository
 {
-    public interface IUnitOfWork: IDisposable
+    public interface IProductsSupplierRepository: IRepository<ProductsSupplier>
     {
-        ICustomerRepository Customer { get; }
-        IPackageRepository Package { get; }
-
-
-        Task<int> CompleteAsyc();
     }
 }
