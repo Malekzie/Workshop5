@@ -1,9 +1,8 @@
-using Microsoft.EntityFrameworkCore;
-using TravelExperts.DataAccess.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.EntityFrameworkCore;
+using TravelExperts.DataAccess.Data;
 using TravelExperts.Utils;
-using TravelExperts.DataAccess.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
