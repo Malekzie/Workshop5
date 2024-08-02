@@ -50,7 +50,7 @@ namespace TravelExperts.Controllers
 
         public IActionResult BuyPackage()
         {
-            var package = Package.GetPackage();
+            
             
             return View();
         }
