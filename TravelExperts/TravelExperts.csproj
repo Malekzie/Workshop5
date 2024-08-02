@@ -16,4 +16,8 @@
     <ProjectReference Include="..\TravelExperts.Utils\TravelExperts.Utils.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\img\" />
+  </ItemGroup>
+
 </Project>

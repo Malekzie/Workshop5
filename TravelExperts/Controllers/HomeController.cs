@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using TravelExperts.Models;
+using TravelExperts.Models.ViewModel;
 
 namespace TravelExperts.Controllers
 {
@@ -15,7 +16,36 @@ namespace TravelExperts.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            var cards = new List<CardVM>
+            {
+                new CardVM
+                {
+                    Name = "Card 1",
+                    ImageUrl = "https://via.placeholder.com/150",
+                    Desc = "This is a card"
+                },
+                new CardVM
+                {
+                    Name = "Card 2",
+                    ImageUrl = "https://via.placeholder.com/150",
+                    Desc = "This is a card"
+                },
+                new CardVM
+                {
+                    Name = "Card 3",
+                    ImageUrl = "https://via.placeholder.com/150",
+                    Desc = "This is a card"
+                },
+                new CardVM
+                {
+                    Name = "Card 4",
+                    ImageUrl = "https://via.placeholder.com/150",
+                    Desc = "This is a card"
+                }
+            };
+
+
+            return View(cards);
         }
 
         public IActionResult Privacy()
