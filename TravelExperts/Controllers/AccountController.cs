@@ -18,7 +18,8 @@ namespace TravelExperts.Controllers
 
         public IActionResult History()
         {
-            return View();
+            Customer customer = AccountManager.GetOrderHistory(_context);
+            return View(customer);
         }
     }
 }
