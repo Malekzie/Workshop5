@@ -4,6 +4,7 @@ using TravelExperts.DataAccess.Data;
 using TravelExperts.DataAccess.Models;
 using TravelExperts.Models;
 using TravelExperts.Models.ViewModel;
+using TravelExperts.DataAccess;
 
 namespace TravelExperts.Controllers
 {
@@ -50,9 +51,21 @@ namespace TravelExperts.Controllers
 
         public IActionResult BuyPackage()
         {
-            var package = Package.GetPackage();
-            
             return View();
+        }
+
+        [HttpPost]
+        public ActionResult BuyPackage(IFormCollection collection)
+        {
+            try
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+
+                return View();
+            }
         }
     }
 }
