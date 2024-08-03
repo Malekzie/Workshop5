@@ -6,7 +6,7 @@ namespace TravelExperts
     {
         public static Customer GetAccount(TravelExpertsContext db, int id)
         {
-            Customer? customer = db.Customers.FirstOrDefault(c => c.CustomerId == id);
+            Customer? customer = db.Customers.First(c => c.CustomerId == id);
             return customer;
         }
         public static List<Booking> GetOrderHistory(TravelExpertsContext db, int customerId)
