@@ -2,13 +2,13 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
-using Microsoft.EntityFrameworkCore;
 using TravelExperts.DataAccess.Models;
 using TravelExperts.DataAccess.Service.IService;
-using Microsoft.AspNetCore.Authorization;
+using TravelExperts.Models.ViewModel;
 
 namespace TravelExperts.Controllers
 {
+    [Route("[controller]/[action]")]
     public class AccountController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -18,6 +18,7 @@ namespace TravelExperts.Controllers
             _unitOfWork = unitOfWork;
         }
 
+        [HttpGet]
         public IActionResult Login() => View();
 
         [HttpPost]
@@ -27,10 +28,9 @@ namespace TravelExperts.Controllers
             if (customer != null)
             {
                 var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.Name, username),
-                // Add more claims if needed
-            };
+                {
+                    new Claim(ClaimTypes.Name, username)
+                };
 
                 var claimsIdentity = new ClaimsIdentity(
                     claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -38,7 +38,6 @@ namespace TravelExperts.Controllers
                 var authProperties = new AuthenticationProperties
                 {
                     IsPersistent = true,
-                    // ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(10),
                 };
 
                 await HttpContext.SignInAsync(
@@ -49,38 +48,81 @@ namespace TravelExperts.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
+            ModelState.AddModelError(string.Empty, "Invalid login attempt.");
             return View();
         }
 
-        public IActionResult Register() => View();
-
-        [HttpPost]
-        public IActionResult Register(string username, string password, string firstName, string lastName, string address, string city, string prov, string postal, string country, string homePhone, string busPhone, string email)
+        [HttpGet]
+        [Route("Register")]
+        public IActionResult Register(string returnUrl = null)
         {
-            var customer = new Customer
+            var model = new RegisterVM
             {
-                Username = username,
-                Password = password, // Note: In a real application, passwords should be hashed
-                CustFirstName = firstName,
-                CustLastName = lastName,
-                CustAddress = address,
-                CustCity = city,
-                CustProv = prov,
-                CustPostal = postal,
-                CustCountry = country,
-                CustHomePhone = homePhone,
-                CustBusPhone = busPhone,
-                CustEmail = email
+                Input = new RegisterVM.InputModel(),
+                ProvinceList = GetProvinces(),
+                ReturnUrl = returnUrl
             };
-
-            _unitOfWork.Customers.Add(customer);
-            _unitOfWork.Save();
-
-            return RedirectToAction("Login", "Account");
+            return View(model);
         }
 
-        public IActionResult Index => View();
+        [HttpPost]
+        [Route("Register")]
+        [ValidateAntiForgeryToken]
+        public IActionResult Register(RegisterVM model, string returnUrl = null)
+        {
+            model.ReturnUrl = returnUrl;
+            if (ModelState.IsValid)
+            {
+                var customer = new Customer
+                {
+                    Username = model.Input.Email,
+                    Password = model.Input.Password, // Password should be hashed in a real application
+                    CustFirstName = model.Input.CustFirstName,
+                    CustLastName = model.Input.CustLastName,
+                    CustAddress = model.Input.CustAddress,
+                    CustCity = model.Input.CustCity,
+                    CustProv = model.Input.CustProv,
+                    CustPostal = model.Input.CustPostal,
+                    CustCountry = model.Input.CustCountry,
+                    CustHomePhone = model.Input.CustHomePhone,
+                    CustBusPhone = model.Input.CustBusPhone,
+                    CustEmail = model.Input.Email
+                };
 
+                _unitOfWork.Customers.RegisterCustomer(customer);
+                _unitOfWork.Save(); // Ensure changes are saved to the database
+
+                return RedirectToAction("Login", "Account");
+            }
+
+            // If we get here, something went wrong, redisplay form
+
+            model.ProvinceList = GetProvinces();
+            return View(model);
+        }
+
+        private Dictionary<string, string> GetProvinces()
+        {
+            return new Dictionary<string, string>
+            {
+                { "AB", "Alberta" },
+                { "BC", "British Columbia" },
+                { "MB", "Manitoba" },
+                { "NB", "New Brunswick" },
+                { "NL", "Newfoundland and Labrador" },
+                { "NS", "Nova Scotia" },
+                { "ON", "Ontario" },
+                { "PE", "Prince Edward Island" },
+                { "QC", "Quebec" },
+                { "SK", "Saskatchewan" },
+                { "NT", "Northwest Territories" },
+                { "NU", "Nunavut" },
+                { "YT", "Yukon" }
+            };
+        }
+
+        [HttpPost]
+        [Route("Logout")]
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);

@@ -5,17 +5,27 @@ namespace TravelExperts.Models.ViewModel
 {
     public class RegisterVM
     {
+        public RegisterVM()
+        {
+            ReturnUrl = string.Empty;
+            Input = new InputModel();
+            ProvinceList = new Dictionary<string, string>();
+        }
+
         public string ReturnUrl { get; set; }
         public InputModel Input { get; set; }
         public Dictionary<string, string> ProvinceList { get; set; }
 
         public class InputModel
         {
-            [Required]
             [EmailAddress]
+            [Required(ErrorMessage = "Email is required.")]
             public string Email { get; set; }
 
-            [Required]
+            [Required(ErrorMessage = "Username is required.")]
+            public string Username { get; set; }
+
+            [Required(ErrorMessage = "Password is required.")]
             [DataType(DataType.Password)]
             public string Password { get; set; }
 
@@ -23,28 +33,28 @@ namespace TravelExperts.Models.ViewModel
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
 
-            [Required]
+            [Required(ErrorMessage = "First name is required.")]
             public string CustFirstName { get; set; }
 
-            [Required]
+            [Required(ErrorMessage = "Last name is required.")]
             public string CustLastName { get; set; }
 
-            [Required]
+            [Required(ErrorMessage = "Address is required.")]
             public string CustAddress { get; set; }
 
-            [Required]
+            [Required(ErrorMessage = "City is required.")]
             public string CustCity { get; set; }
 
-            [Required]
+            [Required(ErrorMessage = "Province is required.")]
             public string CustProv { get; set; }
 
-            [Required]
+            [Required(ErrorMessage = "Postal code is required.")]
             public string CustPostal { get; set; }
 
-            [Required]
+            [Required(ErrorMessage = "Country is required.")]
             public string CustCountry { get; set; }
 
-            [Required]
+            [Required(ErrorMessage = "Home phone is required.")]
             public string CustHomePhone { get; set; }
 
             public string CustBusPhone { get; set; }

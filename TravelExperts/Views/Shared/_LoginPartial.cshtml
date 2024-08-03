@@ -1,10 +1,15 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@inject SignInManager<Customer> SignInManager
 
+
+@if (User.Identity.IsAuthenticated)
+{
+    <p>Welcome, @User.Identity.Name!</p>
+}
+else
+{
+    
 <ul class="navbar-nav">
     <li><a class="dropdown-item" asp-controller="Account" asp-action="Login">Login</a></li>
     <li><a class="dropdown-item" asp-controller="Account" asp-action="Register">Register</a></li>
 </ul>
+}
