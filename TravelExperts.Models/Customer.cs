@@ -2,31 +2,48 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace TravelExperts.DataAccess.Models;
 
-public partial class Customer
+public class Customer
 {
     public int CustomerId { get; set; }
 
+    [Required, StringLength(30)]
+    public string Username { get; set; }
+
+    [Required, StringLength(30)]
+    public string Password { get; set; }
+
+    [Required, StringLength(50)]
     public string CustFirstName { get; set; }
 
+    [Required, StringLength(50)]
     public string CustLastName { get; set; }
 
+    [Required, StringLength(100)]
     public string CustAddress { get; set; }
 
+    [Required, StringLength(50)]
     public string CustCity { get; set; }
 
+    [Required, StringLength(2)]
     public string CustProv { get; set; }
 
+    [Required, StringLength(10)]
     public string CustPostal { get; set; }
 
+    [Required, StringLength(50)]
     public string CustCountry { get; set; }
 
+    [Required, Phone]
     public string CustHomePhone { get; set; }
 
+    [Phone]
     public string CustBusPhone { get; set; }
 
+    [Required, EmailAddress]
     public string CustEmail { get; set; }
 
     public int? AgentId { get; set; }
