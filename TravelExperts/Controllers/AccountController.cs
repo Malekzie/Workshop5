@@ -18,8 +18,10 @@ namespace TravelExperts.Controllers
 
         public IActionResult History()
         {
-            Customer customer = AccountManager.GetOrderHistory(_context);
-            return View(customer);
+            AccountHistoryVM accountHistoryVM = new AccountHistoryVM();
+            accountHistoryVM.Customers = AccountManager.GetAccount(_context, 143);
+            accountHistoryVM.Bookings = AccountManager.GetOrderHistory(_context, 143);
+            return View(accountHistoryVM);
         }
     }
 }

@@ -1,6 +1,5 @@
-﻿
-@model TravelExperts.DataAccess.Models.Customer
-
+﻿@using TravelExperts.Models.ViewModel
+@model AccountHistoryVM
 @{
     ViewData["Title"] = "Order History";
 }
@@ -10,10 +9,49 @@
        
         <div class="row">
             <div class="col">
-                <h2>@Html.DisplayFor(model => model.CustFirstName)'s Order History</h2>
+                <h2>@Model.Customers.CustFirstName.ToString()'s Order History</h2>
                 <p class="my-2">
                     View your past and future vacations here. 
                 </p>
+                <table class="table-bordered text-center" style="width:90%">
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Bookings.First().BookingNo)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Bookings.First().BookingDate)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Bookings.First().TravelerCount)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Bookings.First().TripTypeId)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Bookings.First().PackageId)
+                        </th>
+                    </tr>
+                    @foreach (var item in Model.Bookings)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(AccountHistoryVM => item.BookingNo)
+                            </td>
+                            <td>
+                                @Html.Raw(item.BookingDate.ToShortDateString())
+                            </td>
+                            <td>
+                                @Html.DisplayFor(AccountHistoryVM => item.TravelerCount)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(AccountHistoryVM => item.TripTypeId)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(AccountHistoryVM => item.PackageId)
+                            </td>
+                        </tr>
+                    }
+                </table>
             </div>
         </div>
     </div>
