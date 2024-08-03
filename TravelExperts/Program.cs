@@ -12,7 +12,14 @@ builder.Services.AddDbContext<TravelExpertsContext>(options =>
 
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-    .AddCookie();
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Account/Login"; // Path to your login page
+        options.LogoutPath = "/Account/Logout"; // Path to your logout page
+        options.Cookie.Name = "YourAppCookieName"; // You can customize this name
+        options.Cookie.HttpOnly = true;
+        options.Cookie.SecurePolicy = CookieSecurePolicy.Always; // Adjust according to your environment
+    });
 
 
 var app = builder.Build();
@@ -33,6 +40,7 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseSession();
 
 app.MapRazorPages();
 app.MapDefaultControllerRoute();
