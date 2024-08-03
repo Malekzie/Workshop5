@@ -1,8 +1,65 @@
-﻿@{
+﻿@model IEnumerable<TravelExperts.Models.ViewModel.CardVM>
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<main>
+    <div class="container">
+        <div class="row">
+            <div class="col align-self-center">
+                <h1>Welcome to Travel Experts</h1>
+                <p>
+                    Travel Experts is a travel agency that provides a variety of travel services to customers.
+                    We offer a wide range of vacation packages, cruises, flights, hotels, and car rentals.
+                    Our goal is to provide our customers with the best travel experience possible.
+                    Whether you are planning a family vacation, a romantic getaway, or a business trip,
+                    Travel Experts can help you find the perfect travel package to suit your needs.
+                </p>
+                <div class="mt-2">
+                    <a class="btn btn-warning">Yay</a>
+                    <a class="btn btn-primary">Meow</a>
+                </div>
+            </div>
+            <div class="col align-self-end text-center">
+                <partial name="_CarouselPartial" />
+            </div>
+        </div>
+
+
+    </div>
+
+    <div class="container">
+
+        <div class="row">
+            <div class="col">
+                <h2>Our Services</h2>
+                <p class="my-2">
+                    Travel Experts offers a wide range of travel services to customers.
+                    We provide vacation packages, cruises, flights, hotels, and car rentals.
+                    Our goal is to provide our customers with the best travel experience possible.
+                    Whether you are planning a family vacation, a romantic getaway, or a business trip,
+                    Travel Experts can help you find the perfect travel package to suit your needs.
+                </p>
+            </div>
+            <div class="col">
+
+                <div class="d-flex gap-3 justify-content-center">
+                    @foreach (var card in Model)
+                    {
+                        @Html.Partial("_CardPartial", card)
+                    }
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+</main>
+
+
+
+
+
+
