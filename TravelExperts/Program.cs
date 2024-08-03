@@ -1,26 +1,41 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using TravelExperts.DataAccess.Data;
+using TravelExperts.DataAccess.Repository.IRepository;
+using TravelExperts.DataAccess.Service.IService;
+using TravelExperts.DataAccess.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
 // Add services to the container.
-builder.Services.AddRazorPages();
 builder.Services.AddControllersWithViews();
+
+// Add DbContext, UnitOfWork, and CustomerService
 builder.Services.AddDbContext<TravelExpertsContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
+// Add session services
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
+// Add Authentication and configure the Cookie settings
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
-        options.LoginPath = "/Account/Login"; // Path to your login page
-        options.LogoutPath = "/Account/Logout"; // Path to your logout page
-        options.Cookie.Name = "YourAppCookieName"; // You can customize this name
+        options.LoginPath = "/Account/Login";
+        options.LogoutPath = "/Account/Logout";
+        options.Cookie.Name = "YourAppCookieName";
         options.Cookie.HttpOnly = true;
-        options.Cookie.SecurePolicy = CookieSecurePolicy.Always; // Adjust according to your environment
+        options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
     });
-
 
 var app = builder.Build();
 
@@ -28,7 +43,6 @@ var app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
@@ -37,13 +51,10 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseSession(); // Add session middleware
 
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseSession();
-
-app.MapRazorPages();
-app.MapDefaultControllerRoute();
 
 app.MapControllerRoute(
     name: "default",
