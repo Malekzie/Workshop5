@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using TravelExperts.Models;
+using TravelExperts.Models.ViewModel;
 
 namespace TravelExperts.Controllers
 {
