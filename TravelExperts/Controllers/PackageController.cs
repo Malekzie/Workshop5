@@ -5,6 +5,7 @@ using TravelExperts.DataAccess.Models;
 using TravelExperts.Models;
 using TravelExperts.Models.ViewModel;
 using TravelExperts.DataAccess;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace TravelExperts.Controllers
 {
@@ -47,6 +48,7 @@ namespace TravelExperts.Controllers
                     Desc = "This is a card"
                 }
             };
+            ViewBag.TripTypes = new List<String>() {"Business", "Leisure", "Group"};
 
             //indexPackageViewModel.cards = cards;
             //indexPackageViewModel.packages = PackageManager.GetPackages(_context);
