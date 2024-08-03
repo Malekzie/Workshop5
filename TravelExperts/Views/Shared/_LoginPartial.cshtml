@@ -7,7 +7,9 @@
                         <a class="nav-link text-dark" asp-controller="Account" asp-action="Index">Welcome, @User.Identity.Name!</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-controller="Account" asp-action="Logout">Logout</a>
+                        <form asp-controller="Account" asp-action="Logout" method="post">
+                            <a type="submit" class="nav-link text-dark">Logout</a>
+                        </form>
                     </li>
                 </ul>
             }
