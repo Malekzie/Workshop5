@@ -51,6 +51,7 @@ namespace TravelExperts.Controllers
 
         public IActionResult BuyPackage()
         {
+            
             return View();
         }
 

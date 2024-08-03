@@ -1,22 +1,26 @@
-﻿<div id="carouselExampleAutoplaying" class="carousel slide carousel-fade" data-bs-ride="carousel">
+﻿@model TravelExperts.DataAccess.Models.Package
+
+
+<div id="carouselExampleAutoplaying" class="carousel slide carousel-fade" data-bs-ride="carousel">
     <div class="carousel-inner">
         <div class="carousel-item active">
-            <a href="Package/BuyPackage">
+            <!--can use @ViewBag instead of hardcoding id values eventually-->
+            <a asp-action="BuyPackage" asp-route-packageId="1">
                 <img src="img/Caribbean3.jpg" class="d-block w-100 rounded-3" alt="...">
             </a>
         </div>
         <div class="carousel-item">
-            <a href="Package/BuyPackage">
+            <a asp-action="BuyPackage" asp-route-packageId="2">
                 <img src="img/Hawaii.jpg" class="d-block w-100 rounded-3" alt="...">
             </a>
         </div>
         <div class="carousel-item">
-            <a href="Package/BuyPackage">
+            <a asp-action="BuyPackage" asp-route-packageId="3">
                 <img src="img/Japan.jpg" class="d-block w-100 rounded-3" alt="...">
             </a>
         </div>
         <div class="carousel-item">
-            <a href="Package/BuyPackage">
+            <a asp-action="BuyPackage" asp-route-packageId="4">
                 <img src="img/Paris.jpg" class="d-block w-100 rounded-3" alt="...">
             </a>
         </div>
