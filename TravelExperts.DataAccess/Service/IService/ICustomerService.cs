@@ -1,4 +1,5 @@
-﻿namespace TravelExperts.DataAccess.Repository.IRepository
+﻿
+namespace TravelExperts.DataAccess.Repository.IRepository
 {
     public interface ICustomerService : IService<Customer>
     {

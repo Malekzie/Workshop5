@@ -1,20 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace TravelExperts.Models
+namespace TravelExperts.DataAccess.Models;
+
+public partial class User
 {
-    public class User
-    {
-        [Required]
-        [StringLength(30)]
-        public string Username { get; set; }
+    public int UserId { get; set; }
 
-        [Required]
-        [StringLength(30)]
-        public string Password { get; set; }
-    }
+    public string Username { get; set; } = null!;
+
+    public string Password { get; set; } = null!;
+
+    public int CustomerId { get; set; }
+
+    public virtual Customer Customer { get; set; } = null!;
 }

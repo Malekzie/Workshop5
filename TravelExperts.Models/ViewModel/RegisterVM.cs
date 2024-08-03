@@ -11,7 +11,6 @@ namespace TravelExperts.Models.ViewModel
             Input = new InputModel();
             ProvinceList = new Dictionary<string, string>();
         }
-
         public string ReturnUrl { get; set; }
         public InputModel Input { get; set; }
         public Dictionary<string, string> ProvinceList { get; set; }

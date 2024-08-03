@@ -11,6 +11,6 @@ namespace TravelExperts.DataAccess.Service.IService
     {
         User GetUser(string username, string password);
         void RegisterUser(User user);
-
+        Task<Customer> GetCustomerByID(int userId);
     }
 }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TravelExperts.DataAccess.Models;
 using TravelExperts.Models;
 
 namespace TravelExperts.DataAccess.Service
@@ -27,6 +28,15 @@ namespace TravelExperts.DataAccess.Service
         {
             _context.Users.Add(user);
             _context.SaveChanges();
+        }
+
+        public async Task<Customer> GetCustomerByID(int userId)
+        {
+            var user = await _context.Users
+                .Include(u => u.Customer)
+                .FirstOrDefaultAsync(u => u.UserId == userId);
+
+            return user.Customer;
         }
     }
 }

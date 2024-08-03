@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using TravelExperts.DataAccess.Models;
@@ -29,14 +30,14 @@ namespace TravelExperts.Controllers
         public async Task<IActionResult> Login(string username, string password)
         {
             var user = _unitOfWork.Users.GetUser(username, password);
+            var customer = await _unitOfWork.Users.GetCustomerByID(user.UserId);
+
             if (user != null)
             {
-
                 var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, username),
-                    new Claim("FullName", user.CustFirstName + " " + user.CustLastName),
-                    new Claim(ClaimTypes.Role, "User") // or any other role
+                    new Claim("FullName", customer.CustFirstName + " " + customer.CustLastName),
                 };
 
                 var claimsIdentity = new ClaimsIdentity(
@@ -59,7 +60,6 @@ namespace TravelExperts.Controllers
             return View();
         }
 
-        [HttpGet]
         public IActionResult Register(string returnUrl = null)
         {
             var model = new RegisterVM
@@ -78,15 +78,9 @@ namespace TravelExperts.Controllers
             model.ReturnUrl = returnUrl;
             if (ModelState.IsValid)
             {
-                var user = new User
-                {
-                    Username = model.Input.Email,
-                    Password = model.Input.Password,
-                };
 
                 var customer = new Customer
                 {
-                  
                     CustFirstName = model.Input.CustFirstName,
                     CustLastName = model.Input.CustLastName,
                     CustAddress = model.Input.CustAddress,
@@ -99,9 +93,21 @@ namespace TravelExperts.Controllers
                     CustEmail = model.Input.Email
                 };
 
-                _unitOfWork.Users.RegisterUser(user);
+
+
                 _unitOfWork.Customers.RegisterCustomer(customer);
                 _unitOfWork.Save(); // Ensure changes are saved to the database
+
+                // Create the user after the customer has been created and has an ID
+                var user = new User
+                {
+                    Username = model.Input.Username,
+                    Password = model.Input.Password,
+                    CustomerId = customer.CustomerId // Ensure this is set after the customer is saved
+                };
+
+                _unitOfWork.Users.RegisterUser(user);
+                _unitOfWork.Save(); // Save changes again to register the user
 
                 return RedirectToAction("Login", "Account");
             }

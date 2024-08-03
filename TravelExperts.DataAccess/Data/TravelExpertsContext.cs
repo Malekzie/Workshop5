@@ -7,6 +7,7 @@ using TravelExperts.DataAccess.Models;
 using TravelExperts.Models;
 
 
+
 namespace TravelExperts.DataAccess.Data;
 
 public partial class TravelExpertsContext : DbContext
@@ -22,8 +23,6 @@ public partial class TravelExpertsContext : DbContext
 
     public virtual DbSet<Package> Packages { get; set; }
 
-    public virtual DbSet<PackagesProductsSupplier> PackagesProductsSuppliers { get; set; }
-
     public virtual DbSet<Product> Products { get; set; }
 
     public virtual DbSet<ProductsSupplier> ProductsSuppliers { get; set; }
@@ -32,8 +31,12 @@ public partial class TravelExpertsContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+     
         modelBuilder.Entity<Customer>(entity =>
         {
+
+            entity.ToTable("Customers");
+
             entity.HasKey(e => e.CustomerId)
                 .HasName("aaaaaCustomers_PK")
                 .IsClustered(false);
@@ -68,6 +71,25 @@ public partial class TravelExpertsContext : DbContext
                 .HasMaxLength(2);
         });
 
+        modelBuilder.Entity<User>(entity =>
+        {
+            entity.ToTable("User");
+
+            entity.Property(e => e.Username)
+                .IsRequired()
+                .HasMaxLength(30);
+
+            entity.Property(e => e.Password)
+                .IsRequired()
+                .HasMaxLength(30);
+
+            entity.HasOne(d => d.Customer)
+                .WithMany(p => p.Users)
+                .HasForeignKey(d => d.CustomerId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_User_Customer");
+        });
+
         modelBuilder.Entity<Package>(entity =>
         {
             entity.HasKey(e => e.PackageId)
@@ -84,31 +106,6 @@ public partial class TravelExpertsContext : DbContext
                 .IsRequired()
                 .HasMaxLength(50);
             entity.Property(e => e.PkgStartDate).HasColumnType("datetime");
-        });
-
-        modelBuilder.Entity<PackagesProductsSupplier>(entity =>
-        {
-            entity.HasKey(e => e.PackageProductSupplierId).HasName("PK__Packages__53E8ED99B65B5F2C");
-
-            entity.ToTable("Packages_Products_Suppliers");
-
-            entity.HasIndex(e => e.PackageId, "PackagesPackages_Products_Suppliers");
-
-            entity.HasIndex(e => e.ProductSupplierId, "ProductSupplierId");
-
-            entity.HasIndex(e => e.ProductSupplierId, "Products_SuppliersPackages_Products_Suppliers");
-
-            entity.HasIndex(e => new { e.PackageId, e.ProductSupplierId }, "UQ__Packages__29CA8E9589C9A9DF").IsUnique();
-
-            entity.HasOne(d => d.Package).WithMany(p => p.PackagesProductsSuppliers)
-                .HasForeignKey(d => d.PackageId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("Packages_Products_Supplie_FK00");
-
-            entity.HasOne(d => d.ProductSupplier).WithMany(p => p.PackagesProductsSuppliers)
-                .HasForeignKey(d => d.ProductSupplierId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("Packages_Products_Supplie_FK01");
         });
 
         modelBuilder.Entity<Product>(entity =>
