@@ -1,4 +1,4 @@
-﻿@model IEnumerable<TravelExperts.Models.ViewModel.CardVM>
+﻿@model TravelExperts.Models.ViewModel.IndexPackageViewModel
 
 @{
     ViewData["Title"] = "Package Page";
@@ -34,7 +34,7 @@
             <div class="col">
 
                 <div class="d-flex gap-3 justify-content-center">
-                    @foreach (var card in Model)
+                    @foreach (var card in Model.cards)
                     {
                         @Html.Partial("_CardPartial", card)
                     }

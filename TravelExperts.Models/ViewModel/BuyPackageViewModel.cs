@@ -1,9 +1,15 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using TravelExperts.DataAccess.Models;
 
-namespace TravelExperts.DataAccess.Models.ViewModel
+namespace TravelExperts.Models.ViewModel
 {
     public class BuyPackageViewModel
     {
+
+        public Package packages { get; set; }
+
+        public Booking booking { get; set; }
+
         public int PackageId { get; set; }
 
         public string PackageName { get; set; }
@@ -18,6 +24,7 @@ namespace TravelExperts.DataAccess.Models.ViewModel
         public string BookingNo { get; set; }
 
         public int TravelerCount { get; set; }
+
         public int CustomerId { get; set; }
 
         public string TripTypeId { get; set; }

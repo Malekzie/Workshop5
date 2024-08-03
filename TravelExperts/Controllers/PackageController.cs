@@ -19,6 +19,7 @@ namespace TravelExperts.Controllers
 
         public IActionResult Index()
         {
+            IndexPackageViewModel indexPackageViewModel = new IndexPackageViewModel();
             var cards = new List<CardVM>
             {
                 new CardVM
@@ -46,7 +47,10 @@ namespace TravelExperts.Controllers
                     Desc = "This is a card"
                 }
             };
-            return View(cards);
+
+            //indexPackageViewModel.cards = cards;
+            indexPackageViewModel.packages = PackageManager.GetPackages(_context);
+            return View(indexPackageViewModel);
         }
 
         public IActionResult BuyPackage()

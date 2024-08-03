@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using TravelExperts.DataAccess.Models;
+using TravelExperts.Models.ViewModel;
 
 
 namespace TravelExperts.DataAccess.Data;

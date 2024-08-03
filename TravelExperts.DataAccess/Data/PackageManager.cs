@@ -5,13 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using TravelExperts.DataAccess.Models;
 
-namespace TravelExperts
+namespace TravelExperts.DataAccess.Data
 {
     public static class PackageManager
     {
+
         public static List<Package> GetPackages(TravelExpertsContext db)
         {
-            List<Package> packages = db.Packages.ToList();
+            List<Package> packages = db.Packages.Select(p => p).ToList();
             return packages;
         }
 

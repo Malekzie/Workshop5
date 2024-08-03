@@ -1,4 +1,4 @@
-﻿@model TravelExperts.DataAccess.Models.ViewModel.BuyPackageViewModel
+﻿@model TravelExperts.Models.ViewModel.BuyPackageViewModel
 
 @{
     ViewData["Title"] = "Buy package";
@@ -13,17 +13,17 @@
         <form asp-action="BuyPackage" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            <input type="hidden" asp-for="PackageId" value="@ViewBag.PackageId" />
+            <input type="hidden" asp-for="packages.PackageId" value="@ViewBag.PackageId" />
 
             <div class="form-group">
-                <label asp-for="TravelerCount" class="control-label">Please enter your traveler count</label>
-                <input asp-for="TravelerCount" class="form-control" />
-                <span asp-validation-for="TravelerCount" class="text-danger"></span>
+                <label asp-for="booking.TravelerCount" class="control-label">Please enter your traveler count</label>
+                <input asp-for="booking.TravelerCount" class="form-control" />
+                <span asp-validation-for="booking.TravelerCount" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <select name="TripTypeId" asp-Items="@ViewBag.TripTypeLetter" class="control-label">Please select your trip type</select>
-                <input asp-for="TripTypeId" class="form-control" />
-                <span asp-validation-for="TripTypeId" class="text-danger"></span>
+                <input asp-for="booking.TripTypeId" class="form-control" />
+                <span asp-validation-for="booking.TripTypeId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Buy Package" class="btn btn-primary" />

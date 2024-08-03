@@ -16,7 +16,7 @@ namespace TravelExperts.DataAccess.Models
                       
         public string ?BookingNo { get; set; }
 
-        public int ?TravelerCount { get; set; }
+        public double ?TravelerCount { get; set; }
 
         public int ?CustomerId { get; set; }
 
