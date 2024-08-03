@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using TravelExperts.DataAccess.Models;
 using TravelExperts.DataAccess.Service.IService;
 using TravelExperts.Models.ViewModel;
@@ -29,7 +30,9 @@ namespace TravelExperts.Controllers
             {
                 var claims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.Name, username)
+                    new Claim(ClaimTypes.Name, username),
+                    new Claim("FullName", customer.CustFirstName + " " + customer.CustLastName),
+                    new Claim(ClaimTypes.Role, "User") // or any other role
                 };
 
                 var claimsIdentity = new ClaimsIdentity(
@@ -53,7 +56,6 @@ namespace TravelExperts.Controllers
         }
 
         [HttpGet]
-        [Route("Register")]
         public IActionResult Register(string returnUrl = null)
         {
             var model = new RegisterVM
@@ -66,7 +68,6 @@ namespace TravelExperts.Controllers
         }
 
         [HttpPost]
-        [Route("Register")]
         [ValidateAntiForgeryToken]
         public IActionResult Register(RegisterVM model, string returnUrl = null)
         {
@@ -96,9 +97,15 @@ namespace TravelExperts.Controllers
             }
 
             // If we get here, something went wrong, redisplay form
-
             model.ProvinceList = GetProvinces();
             return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Login", "Account");
         }
 
         private Dictionary<string, string> GetProvinces()
@@ -119,14 +126,6 @@ namespace TravelExperts.Controllers
                 { "NU", "Nunavut" },
                 { "YT", "Yukon" }
             };
-        }
-
-        [HttpPost]
-        [Route("Logout")]
-        public async Task<IActionResult> Logout()
-        {
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return RedirectToAction("Login", "Account");
         }
     }
 }

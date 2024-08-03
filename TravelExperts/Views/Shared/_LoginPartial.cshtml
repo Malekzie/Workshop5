@@ -1,15 +1,28 @@
-﻿@inject SignInManager<Customer> SignInManager
-
-
-@if (User.Identity.IsAuthenticated)
-{
-    <p>Welcome, @User.Identity.Name!</p>
-}
-else
-{
-    
-<ul class="navbar-nav">
-    <li><a class="dropdown-item" asp-controller="Account" asp-action="Login">Login</a></li>
-    <li><a class="dropdown-item" asp-controller="Account" asp-action="Register">Register</a></li>
-</ul>
-}
+﻿<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" asp-controller="Home" asp-action="Index">TravelExperts</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+            @if (User.Identity.IsAuthenticated)
+            {
+                <li class="nav-item">
+                    <span class="navbar-text">Welcome, @User.Identity.Name!</span>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="Account" asp-action="Logout">Logout</a>
+                </li>
+            }
+            else
+            {
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="Account" asp-action="Login">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="Account" asp-action="Register">Register</a>
+                </li>
+            }
+        </ul>
+    </div>
+</nav>

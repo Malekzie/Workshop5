@@ -8,16 +8,16 @@ using TravelExperts.DataAccess.Service;
 var builder = WebApplication.CreateBuilder(args);
 
 
-// Add services to the container.
+
 builder.Services.AddControllersWithViews();
 
-// Add DbContext, UnitOfWork, and CustomerService
+
 builder.Services.AddDbContext<TravelExpertsContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-// Add session services
+
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 {
@@ -26,7 +26,7 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 
-// Add Authentication and configure the Cookie settings
+
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
