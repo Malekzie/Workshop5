@@ -48,7 +48,14 @@ namespace TravelExperts.Controllers
                     Desc = "This is a card"
                 }
             };
-            ViewBag.TripTypes = new List<String>() {"Business", "Leisure", "Group"};
+            List<TripType> tripTypeLabels = new List<TripType> 
+            { 
+                new TripType{ ID = "B", TripTypeName = "Business" },
+                new TripType{ ID = "L", TripTypeName = "Leisure" },
+                new TripType{ ID = "G", TripTypeName = "Group" }
+            };
+            var tripTypes = new SelectList(tripTypeLabels, "ID", "TripTypeName").ToList();
+            ViewBag.TripTypes = tripTypes;
 
             //indexPackageViewModel.cards = cards;
             //indexPackageViewModel.packages = PackageManager.GetPackages(_context);
