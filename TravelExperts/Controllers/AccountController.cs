@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using TravelExperts.DataAccess.Models;
 using TravelExperts.DataAccess.Service.IService;
+using TravelExperts.Models;
 using TravelExperts.Models.ViewModel;
 
 namespace TravelExperts.Controllers
@@ -27,13 +28,14 @@ namespace TravelExperts.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(string username, string password)
         {
-            var customer = _unitOfWork.Customers.GetCustomerByUsernameAndPassword(username, password);
-            if (customer != null)
+            var user = _unitOfWork.Users.GetUser(username, password);
+            if (user != null)
             {
+
                 var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, username),
-                    new Claim("FullName", customer.CustFirstName + " " + customer.CustLastName),
+                    new Claim("FullName", user.CustFirstName + " " + user.CustLastName),
                     new Claim(ClaimTypes.Role, "User") // or any other role
                 };
 
@@ -76,10 +78,15 @@ namespace TravelExperts.Controllers
             model.ReturnUrl = returnUrl;
             if (ModelState.IsValid)
             {
-                var customer = new Customer
+                var user = new User
                 {
                     Username = model.Input.Email,
-                    Password = model.Input.Password, // Password should be hashed in a real application
+                    Password = model.Input.Password,
+                };
+
+                var customer = new Customer
+                {
+                  
                     CustFirstName = model.Input.CustFirstName,
                     CustLastName = model.Input.CustLastName,
                     CustAddress = model.Input.CustAddress,
@@ -92,6 +99,7 @@ namespace TravelExperts.Controllers
                     CustEmail = model.Input.Email
                 };
 
+                _unitOfWork.Users.RegisterUser(user);
                 _unitOfWork.Customers.RegisterCustomer(customer);
                 _unitOfWork.Save(); // Ensure changes are saved to the database
 

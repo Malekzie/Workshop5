@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using TravelExperts.DataAccess.Models;
+using TravelExperts.Models;
 
 
 namespace TravelExperts.DataAccess.Data;
@@ -14,6 +15,8 @@ public partial class TravelExpertsContext : DbContext
         : base(options)
     {
     }
+
+    public virtual DbSet<User> Users { get; set; }
 
     public virtual DbSet<Customer> Customers { get; set; }
 

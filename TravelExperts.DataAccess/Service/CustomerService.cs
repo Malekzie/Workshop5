@@ -15,11 +15,6 @@ namespace TravelExperts.DataAccess.Service
             _context = context;
         }
 
-        public Customer GetCustomerByUsernameAndPassword(string username, string password)
-        {
-            return _context.Customers.SingleOrDefault(c => c.Username == username && c.Password == password);
-        }
-
         public void RegisterCustomer(Customer customer)
         {
             _context.Customers.Add(customer);

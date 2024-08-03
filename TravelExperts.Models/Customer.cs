@@ -10,11 +10,6 @@ public class Customer
 {
     public int CustomerId { get; set; }
 
-    [Required, StringLength(30)]
-    public string Username { get; set; }
-
-    [Required, StringLength(30)]
-    public string Password { get; set; }
 
     [Required, StringLength(50)]
     public string CustFirstName { get; set; }

@@ -8,6 +8,7 @@ namespace TravelExperts.DataAccess.Service.IService
 {
     public interface IUnitOfWork : IDisposable
     {
+        IUserService Users { get; }
         ICustomerService Customers { get; }
         IPackageService Packages { get; }
         IProductsService Products { get; }

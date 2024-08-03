@@ -17,8 +17,10 @@ namespace TravelExperts.DataAccess.Service
             Products = new ProductsService(_context);
             ProductsSuppliers = new ProductsSupplierService(_context);
             Suppliers = new SupplierService(_context);
+            Users = new UserService(_context);
         }
 
+        public IUserService Users { get; private set; }
         public ICustomerService Customers { get; private set; }
         public IProductsService Products { get; private set; }
         public IProductsSupplierService ProductsSuppliers { get; private set; }
