@@ -19,6 +19,8 @@ namespace TravelExperts.Controllers
             _unitOfWork = unitOfWork;
         }
 
+        public IActionResult Index() => View();
+
         [HttpGet]
         public IActionResult Login() => View();
 
