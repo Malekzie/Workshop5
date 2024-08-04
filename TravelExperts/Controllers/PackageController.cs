@@ -2,6 +2,7 @@
 using TravelExperts.DataAccess.Models;
 using TravelExperts.DataAccess.Service.IService;
 using TravelExperts.Models.ViewModel;
+using TravelExperts.Utils;
 // Written by: Ben Wood
 // Refactored by: Robbie Soriano, Aiden Giesbrecht
 
@@ -71,29 +72,39 @@ namespace TravelExperts.Controllers
             return View(viewModel);
         }
 
-        //[HttpPost]
-        //public ActionResult BuyPackage(IFormCollection collection)
-        //{
-        //    try
-        //    {
-        //        BookingManager.AddBooking(_context, new Booking
-        //        {
+        [HttpPost]
+        public ActionResult BuyPackage(BuyPackageViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var newBooking = new Booking
+                    {
+                        BookingDate = DateTime.Now,
+                        BookingNo = BookingUtil.GenerateBookingNumber(),
+                        TravelerCount = model.Booking.TravelerCount,
+                        CustomerId = 143, // Replace with actual customer ID
+                        TripTypeId = model.Booking.TripTypeId,
+                        PackageId = model.Package.PackageId
+                    };
 
-        //            BookingDate = DateTime.Now,
-        //            BookingNo = "123456",
-        //            TravelerCount = Convert.ToDouble(collection["TravelerCount"]),
-        //            CustomerId = 143,
-        //            TripTypeId = collection["TripTypeId"],
-        //            PackageId = 1
+                    _unitOfWork.Bookings.Add(newBooking);
+                    _unitOfWork.Save();
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (Exception ex)
+                {
+                    // Log the exception (ex) if necessary
+                    ModelState.AddModelError("", "An error occurred while processing your request.");
+                }
+            }
 
-        //        });
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    catch
-        //    {
+            // If we got this far, something failed; re-populate TripTypes for the view
+            model.TripTypes = StaticDefinition.GetTripTypes();
 
-        //        return View();
-        //    }
-        //}
+            return View(model);
+        }
     }
+    
 }
