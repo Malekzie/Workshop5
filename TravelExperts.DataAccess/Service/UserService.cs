@@ -12,9 +12,9 @@ namespace TravelExperts.DataAccess.Service
         }
 
 
-        public User GetUser(string username, string password)
+        public User GetUser(string username)
         {
-            return _context.Users.SingleOrDefault(c => c.Username == username && c.Password == password);
+            return _context.Users.SingleOrDefault(c => c.Username == username);
         }
 
         public void RegisterUser(User user)
