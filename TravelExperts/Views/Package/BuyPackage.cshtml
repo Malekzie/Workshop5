@@ -1,4 +1,4 @@
-﻿@model TravelExperts.Models.ViewModel.BuyPackageViewModel
+@model TravelExperts.Models.ViewModel.BuyPackageViewModel
 
 @{
     ViewData["Title"] = "Buy package";
@@ -23,13 +23,10 @@
             </div>
             <br />
             <div class="form-group">
-<<<<<<< HEAD
                 <label asp-for="booking.TripTypeId" class="control-label">Please select your trip type</label>
                 <select name="TripTypeId" asp-Items="@ViewBag.TripTypeLetter" class="control-label">Please select your trip type</select>
-=======
                 <label asp-for="booking.TravelerCount" class="control-label">Please select your trip type</label>
                 <select name="TripTypeId" asp-Items="@ViewBag.TripTypes" class="form-control"></select>
->>>>>>> 1ea8830b1c5ceb54cc75fd190a5c9e04e3fe416f
                 <span asp-validation-for="booking.TripTypeId" class="text-danger"></span>
             </div>
             <br />
