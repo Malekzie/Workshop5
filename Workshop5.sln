@@ -5,11 +5,13 @@ VisualStudioVersion = 17.10.35013.160
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TravelExperts", "TravelExperts\TravelExperts.csproj", "{826BD5B0-D276-4D0D-8E36-29733E5FD553}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TravelExperts.DataAccess", "TravelExperts.DataAccess\TravelExperts.DataAccess.csproj", "{C18D54E5-C3A5-49FB-8E87-B7BADB6279A2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TravelExperts.DataAccess", "TravelExperts.DataAccess\TravelExperts.DataAccess.csproj", "{C18D54E5-C3A5-49FB-8E87-B7BADB6279A2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TravelExperts.Models", "TravelExperts.Models\TravelExperts.Models.csproj", "{B19DE3EA-FC30-4635-AA93-64B2CB7D15D0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TravelExperts.Models", "TravelExperts.Models\TravelExperts.Models.csproj", "{B19DE3EA-FC30-4635-AA93-64B2CB7D15D0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TravelExperts.Utils", "TravelExperts.Utils\TravelExperts.Utils.csproj", "{44168C30-0B2F-4CB2-AE6C-8126737D1E18}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TravelExperts.Utils", "TravelExperts.Utils\TravelExperts.Utils.csproj", "{44168C30-0B2F-4CB2-AE6C-8126737D1E18}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{ADC64C21-70C5-4FA4-BC3C-B4D65C0F4E5C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
