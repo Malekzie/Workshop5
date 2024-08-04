@@ -127,7 +127,6 @@ namespace TravelExperts.Controllers
                 };
 
                 _unitOfWork.Customers.RegisterCustomer(customer);
-                _unitOfWork.Save();
 
                 var user = new User
                 {
