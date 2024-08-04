@@ -1,0 +1,42 @@
+@model TravelExperts.Models.ViewModel.BuyPackageViewModel
+
+@{
+    ViewData["Title"] = "Buy package";
+
+
+}
+
+<h1>Purchase @ViewBag.PkgName package</h1>
+
+<i>@ViewBag.PkgDesc</i>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="BuyPackage" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <input type="hidden" asp-for="booking.PackageId" value="@ViewBag.PackageId" />
+
+            <div class="form-group">
+                <label asp-for="booking.TravelerCount" class="control-label">Please enter your traveler count</label>
+                <input name="TravelerCount" asp-for="booking.TravelerCount" class="form-control" />
+                <span asp-validation-for="booking.TravelerCount" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="form-group">
+                <label asp-for="booking.TripTypeId" class="control-label">Please select your trip type</label>
+                <select name="TripTypeId" asp-items="@ViewBag.TripTypes" class="form-control">Trip Type</select>
+                <span asp-validation-for="booking.TripTypeId" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="form-group">
+                <input asp-for="booking" type="submit" value="Buy Package" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to packages</a>
+</div>
