@@ -12,6 +12,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TravelExperts.Utils", "TravelExperts.Utils\TravelExperts.Utils.csproj", "{44168C30-0B2F-4CB2-AE6C-8126737D1E18}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{ADC64C21-70C5-4FA4-BC3C-B4D65C0F4E5C}"
+	ProjectSection(SolutionItems) = preProject
+		Docs (robbie).md = Docs (robbie).md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

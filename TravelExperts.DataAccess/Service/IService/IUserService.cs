@@ -9,8 +9,12 @@ namespace TravelExperts.DataAccess.Service.IService
 {
     public interface IUserService: IService<User>
     {
-        User GetUser(string username, string password);
+        // Get user by Username
+        User GetUser(string username);
+        // Register user
         void RegisterUser(User user);
+
+        // Gets customer through user
         Task<Customer> GetCustomerByID(int userId);
     }
 }

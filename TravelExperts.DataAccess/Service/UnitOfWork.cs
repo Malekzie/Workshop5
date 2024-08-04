@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace TravelExperts.DataAccess.Service
 {
     public class UnitOfWork: IUnitOfWork
     {
+        // DB context
         private readonly TravelExpertsContext _context;
         public UnitOfWork(TravelExpertsContext context)
         {
@@ -29,11 +25,13 @@ namespace TravelExperts.DataAccess.Service
 
         public Task<int> Save()
         {
+            // Save changes to the database
             return _context.SaveChangesAsync();
         }
 
         public void Dispose()
         {
+            // Disposes the connection after the operation
             _context.Dispose();
         }
     }

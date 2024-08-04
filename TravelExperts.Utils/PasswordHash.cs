@@ -3,6 +3,8 @@ using System.Text;
 
 public static class PasswordHash
 {
+
+    // We can use this method if we want to. For now, we can just store the password as plain text.
     public static string HashPassword(string password)
     {
         using (var sha256 = SHA256.Create())

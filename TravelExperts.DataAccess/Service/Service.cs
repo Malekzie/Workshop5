@@ -1,9 +1,14 @@
 ﻿
 namespace TravelExperts.DataAccess.Repository
 {
+
+    // Generic Service class that implements IService
     public class Service<T> : IService<T> where T : class
     {
+        // DB Context instance
         private readonly TravelExpertsContext _context;
+
+        // DB Set instance
         private DbSet<T> _db;
 
         public Service(TravelExpertsContext context)
@@ -34,7 +39,10 @@ namespace TravelExperts.DataAccess.Repository
 
         public Task<T> Update(T entity)
         {
+            // Update the entity
             _db.Update(entity);
+
+            // Return the entity result after updating
             return Task.FromResult(entity);
         }
     }

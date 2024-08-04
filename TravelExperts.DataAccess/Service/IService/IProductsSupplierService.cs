@@ -9,5 +9,6 @@ namespace TravelExperts.DataAccess.Service.IService
 {
     public interface IProductsSupplierService : IService<ProductsSupplier>
     {
+        // Add more methods here
     }
 }
