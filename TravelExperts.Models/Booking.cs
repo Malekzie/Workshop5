@@ -9,7 +9,7 @@ namespace TravelExperts.DataAccess.Models
 {
     public partial class Booking
     {
-        [Required]
+        [Key]
         public int BookingId { get; set; }
 
         public DateTime ?BookingDate { get; set; }

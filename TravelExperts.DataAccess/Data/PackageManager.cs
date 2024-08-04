@@ -16,10 +16,10 @@ namespace TravelExperts.DataAccess.Data
             return packages;
         }
 
-        public static List<Package> GetPackageByID(TravelExpertsContext db, int id)
+        public static Package GetPackageByID(TravelExpertsContext db, int id)
         {
-            List<Package> packages = db.Packages.Where(p => p.PackageId == id).ToList();
-            return packages;
+            Package package = db.Packages.First(p => p.PackageId == id);
+            return package;
         }
 
         public static Package GetPackage(TravelExpertsContext db, int id)
@@ -28,12 +28,12 @@ namespace TravelExperts.DataAccess.Data
             return package;
         }
 
-        public static string GetPackageDesc(Package package, int id)
+        public static string GetPackageDesc(Package package)
         {
             return package.PkgDesc;
         }
 
-        public static string GetPackageName(Package package, int id)
+        public static string GetPackageName(Package package)
         {
             return package.PkgName;
         }

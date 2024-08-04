@@ -6,7 +6,9 @@
 
 }
 
-<h1>Purchase Package</h1>
+<h1>Purchase @ViewBag.PkgName package</h1>
+
+<i>@ViewBag.PkgDesc</i>
 
 <hr />
 <div class="row">
@@ -14,24 +16,22 @@
         <form asp-action="BuyPackage" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            <input type="hidden" asp-for="packages.PackageId" value="@ViewBag.PackageId" />
+            <input type="hidden" asp-for="booking.PackageId" value="@ViewBag.PackageId" />
 
             <div class="form-group">
                 <label asp-for="booking.TravelerCount" class="control-label">Please enter your traveler count</label>
-                <input asp-for="booking.TravelerCount" class="form-control" />
+                <input name="TravelerCount" asp-for="booking.TravelerCount" class="form-control" />
                 <span asp-validation-for="booking.TravelerCount" class="text-danger"></span>
             </div>
             <br />
             <div class="form-group">
                 <label asp-for="booking.TripTypeId" class="control-label">Please select your trip type</label>
-                <select name="TripTypeId" asp-Items="@ViewBag.TripTypeLetter" class="control-label">Please select your trip type</select>
-                <label asp-for="booking.TravelerCount" class="control-label">Please select your trip type</label>
-                <select name="TripTypeId" asp-Items="@ViewBag.TripTypes" class="form-control"></select>
+                <select name="TripTypeId" asp-items="@ViewBag.TripTypes" class="form-control">Trip Type</select>
                 <span asp-validation-for="booking.TripTypeId" class="text-danger"></span>
             </div>
             <br />
             <div class="form-group">
-                <input type="submit" value="Buy Package" class="btn btn-primary" />
+                <input asp-for="booking" type="submit" value="Buy Package" class="btn btn-primary" />
             </div>
         </form>
     </div>

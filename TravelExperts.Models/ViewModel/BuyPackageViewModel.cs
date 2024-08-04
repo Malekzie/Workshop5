@@ -12,7 +12,7 @@ namespace TravelExperts.Models.ViewModel
 
         //public int PackageId { get; set; }
 
-        //public string PackageName { get; set; }
+        //public string PkgName { get; set; }
 
         //public string PackageDesc { get; set; }
 
