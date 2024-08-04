@@ -60,6 +60,10 @@
 		before storing it in the database. This is useful when you want to ensure that
 		the password is stored securely in the database.
 
+		It also has StaticDefinitions class for constants. Here, I've defined the
+		constants that are used throughout the project. This is useful when you want
+		to define constants that are used in multiple places in the project.
+
 ## Features
 
 	A cool new feature I found, was using a Global Using class that injects
