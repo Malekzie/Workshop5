@@ -5,6 +5,7 @@ using System.Security.Claims;
 using TravelExperts.DataAccess.Models;
 using TravelExperts.DataAccess.Service.IService;
 using TravelExperts.Models.ViewModel;
+using TravelExperts.Utils;
 
 namespace TravelExperts.Controllers
 {
@@ -85,7 +86,7 @@ namespace TravelExperts.Controllers
             var model = new RegisterVM
             {
                 Input = new RegisterVM.InputModel(),
-                ProvinceList = GetProvinces(),
+                ProvinceList = StaticDefinition.GetProvinces(),
                 ReturnUrl = returnUrl
             };
             return View(model);
@@ -108,7 +109,7 @@ namespace TravelExperts.Controllers
                 if (existingUser != null)
                 {
                     ModelState.AddModelError("", "Username already exists.");
-                    model.ProvinceList = GetProvinces();
+                    model.ProvinceList = StaticDefinition.GetProvinces();
                     return View(model);
                 }
 
@@ -143,7 +144,7 @@ namespace TravelExperts.Controllers
             }
 
             ModelState.AddModelError("", "Invalid registration attempt.");
-            model.ProvinceList = GetProvinces();
+            model.ProvinceList = StaticDefinition.GetProvinces();
             return View(model);
         }
 
@@ -156,30 +157,6 @@ namespace TravelExperts.Controllers
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Login", "Account");
-        }
-
-        /// <summary>
-        /// Retrieves a dictionary of Canadian provinces.
-        /// </summary>
-        /// <returns>A dictionary where the key is the province abbreviation and the value is the full province name.</returns>
-        private Dictionary<string, string> GetProvinces()
-        {
-            return new Dictionary<string, string>
-            {
-                { "AB", "Alberta" },
-                { "BC", "British Columbia" },
-                { "MB", "Manitoba" },
-                { "NB", "New Brunswick" },
-                { "NL", "Newfoundland and Labrador" },
-                { "NS", "Nova Scotia" },
-                { "ON", "Ontario" },
-                { "PE", "Prince Edward Island" },
-                { "QC", "Quebec" },
-                { "SK", "Saskatchewan" },
-                { "NT", "Northwest Territories" },
-                { "NU", "Nunavut" },
-                { "YT", "Yukon" }
-            };
         }
     }
 }
