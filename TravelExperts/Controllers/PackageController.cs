@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using TravelExperts.DataAccess.Models;
 using TravelExperts.DataAccess.Service.IService;
 using TravelExperts.Models.ViewModel;
@@ -44,6 +45,7 @@ namespace TravelExperts.Controllers
             return View(cards);
         }
 
+        [Authorize]
         public async Task<IActionResult> BuyPackage(int packageId)
         {
             List<TripType> tripTypeLabels = new List<TripType>
@@ -73,6 +75,7 @@ namespace TravelExperts.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public ActionResult BuyPackage(BuyPackageViewModel model)
         {
             if (ModelState.IsValid)
