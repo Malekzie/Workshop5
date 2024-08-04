@@ -18,29 +18,22 @@
 
             <div class="form-group">
                 <label asp-for="Booking.TravelerCount" class="control-label">Please enter your traveler count</label>
-                <input name="TravelerCount" asp-for="Booking.TravelerCount" class="form-control" />
+                <input asp-for="Booking.TravelerCount" class="form-control" />
                 <span asp-validation-for="Booking.TravelerCount" class="text-danger"></span>
             </div>
             <br />
             <div class="form-group">
                 <label asp-for="Booking.TripTypeId" class="control-label">Please select your trip type</label>
-                <select name="TripTypeId" asp-for="Booking.TripTypeId" class="form-control">
-                    <option selected disabled>-- Select a package -- </option>
-                    @foreach (var tripType in Model.TripTypes)
-                    {
-                        <option value="@tripType.ID">@tripType.TripTypeName</option>
-                    }
+                <select asp-for="Booking.TripTypeId" class="form-control" asp-items="@(new SelectList(Model.TripTypes, "ID", "TripTypeName"))">
+                    <option value="">Select Trip Type</option>
                 </select>
                 <span asp-validation-for="Booking.TripTypeId" class="text-danger"></span>
             </div>
             <br />
             <div class="form-group">
-                <input asp-for="Booking" type="submit" value="Buy Package" class="btn btn-primary" />
+                <input type="submit" value="Buy Package" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-outline-secondary">Back to packages</a>
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to packages</a>
 </div>
