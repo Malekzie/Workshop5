@@ -1,2 +1,2 @@
-﻿global using Microsoft.AspNetCore.Identity;
-global using System.ComponentModel.DataAnnotations;
+﻿global using TravelExperts.DataAccess.Models;
+global using TravelExperts.Models;
