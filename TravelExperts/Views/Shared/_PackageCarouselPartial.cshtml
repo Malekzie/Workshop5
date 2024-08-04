@@ -1,0 +1,35 @@
+﻿
+
+<div id="carouselExampleAutoplaying" class="carousel slide carousel-fade" data-bs-ride="carousel">
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <!--can use @ViewBag instead of hardcoding id values eventually-->
+            <a asp-action="BuyPackage" asp-route-packageId="1">
+                <img src="img/Caribbean3.jpg" class="d-block w-100 rounded-3" alt="...">
+            </a>
+        </div>
+        <div class="carousel-item">
+            <a asp-action="BuyPackage" asp-route-packageId="2">
+                <img src="img/Hawaii.jpg" class="d-block w-100 rounded-3" alt="...">
+            </a>
+        </div>
+        <div class="carousel-item">
+            <a asp-action="BuyPackage" asp-route-packageId="3">
+                <img src="img/Japan.jpg" class="d-block w-100 rounded-3" alt="...">
+            </a>
+        </div>
+        <div class="carousel-item">
+            <a asp-action="BuyPackage" asp-route-packageId="4">
+                <img src="img/Paris.jpg" class="d-block w-100 rounded-3" alt="...">
+            </a>
+        </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>

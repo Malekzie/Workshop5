@@ -21,6 +21,8 @@ public partial class TravelExpertsContext : DbContext
 
     public virtual DbSet<Customer> Customers { get; set; }
 
+    public virtual DbSet<Booking> Bookings { get; set; }
+
     public virtual DbSet<Package> Packages { get; set; }
 
     public virtual DbSet<Product> Products { get; set; }

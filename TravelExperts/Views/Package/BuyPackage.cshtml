@@ -1,0 +1,39 @@
+@model BuyPackageViewModel
+
+@{
+    ViewData["Title"] = "Buy package";
+}
+
+<h1>Purchase @Model.Package.PkgName package</h1>
+
+<i>@Model.Package.PkgDesc</i>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="BuyPackage" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <input type="hidden" asp-for="Booking.PackageId" value="@Model.Package.PackageId" />
+
+            <div class="form-group">
+                <label asp-for="Booking.TravelerCount" class="control-label">Please enter your traveler count</label>
+                <input asp-for="Booking.TravelerCount" class="form-control" />
+                <span asp-validation-for="Booking.TravelerCount" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="form-group">
+                <label asp-for="Booking.TripTypeId" class="control-label">Please select your trip type</label>
+                <select asp-for="Booking.TripTypeId" class="form-control" asp-items="@(new SelectList(Model.TripTypes, "ID", "TripTypeName"))">
+                    <option value="">Select Trip Type</option>
+                </select>
+                <span asp-validation-for="Booking.TripTypeId" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="form-group">
+                <input type="submit" value="Buy Package" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-outline-secondary">Back to packages</a>
+            </div>
+        </form>
+    </div>
+</div>

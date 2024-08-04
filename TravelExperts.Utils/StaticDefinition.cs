@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TravelExperts.DataAccess.Models;
 
 namespace TravelExperts.Utils
 {
@@ -15,24 +16,15 @@ namespace TravelExperts.Utils
         public const string Customer = "Customer";
         public const string Admin = "Admin";
 
-        public static Dictionary<string, string> GetProvinces()
+        public static IEnumerable<TripType> GetTripTypes()
         {
-            return new Dictionary<string, string>
-            {
-                { "AB", "Alberta" },
-                { "BC", "British Columbia" },
-                { "MB", "Manitoba" },
-                { "NB", "New Brunswick" },
-                { "NL", "Newfoundland and Labrador" },
-                { "NS", "Nova Scotia" },
-                { "ON", "Ontario" },
-                { "PE", "Prince Edward Island" },
-                { "QC", "Quebec" },
-                { "SK", "Saskatchewan" },
-                { "NT", "Northwest Territories" },
-                { "NU", "Nunavut" },
-                { "YT", "Yukon" }
-            };
+            return new List<TripType>
+        {
+            new TripType { ID = "B", TripTypeName = "Business" },
+            new TripType { ID = "L", TripTypeName = "Leisure" },
+            new TripType { ID = "G", TripTypeName = "Group" }
+        };
         }
+
     }
 }
