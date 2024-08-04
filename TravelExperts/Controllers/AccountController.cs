@@ -46,14 +46,21 @@ namespace TravelExperts.Controllers
         public async Task<IActionResult> Login(string username, string password)
         {
             var user = _unitOfWork.Users.GetUser(username);
+            if (user == null || user.Password != password)
+            {
+                ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                return View();
+            }
+
             var customer = await _unitOfWork.Users.GetCustomerByID(user.UserId);
 
-            if (user != null)
+            if (customer != null)
             {
                 var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, username),
                     new Claim("FullName", customer.CustFirstName + " " + customer.CustLastName),
+                    new Claim("CustomerId", customer.CustomerId.ToString()) // Add CustomerId claim
                 };
 
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -68,12 +75,22 @@ namespace TravelExperts.Controllers
                     new ClaimsPrincipal(claimsIdentity),
                     authProperties);
 
+                // Set customer ID in a cookie
+                HttpContext.Response.Cookies.Append("CustomerId", customer.CustomerId.ToString(), new CookieOptions
+                {
+                    Expires = DateTimeOffset.UtcNow.AddDays(30), // Set cookie to expire in 30 days
+                    IsEssential = true, // Required for GDPR compliance
+                    HttpOnly = true // Ensures the cookie is accessible only to the server
+                });
+
                 return RedirectToAction("Index", "Home");
             }
 
             ModelState.AddModelError(string.Empty, "Invalid login attempt.");
             return View();
         }
+
+
 
         /// <summary>
         /// Displays the registration page.
