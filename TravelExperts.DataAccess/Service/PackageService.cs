@@ -9,6 +9,11 @@ namespace TravelExperts.DataAccess.Service
         {
             _context = context;
         }
+
+        public List<Package> GetById(int id)
+        {
+            return _context.Packages.Where(p => p.PackageId == id).ToList();
+        }
     }
 
 }

@@ -2,6 +2,6 @@
 {
     public interface IPackageService : IService<Package>
     {
-        // Add more methods here
+        List<Package> GetById(int id);
     }
 }

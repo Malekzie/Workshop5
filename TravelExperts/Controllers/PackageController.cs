@@ -1,112 +1,99 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
-using TravelExperts.DataAccess.Data;
 using TravelExperts.DataAccess.Models;
-using TravelExperts.Models;
+using TravelExperts.DataAccess.Service.IService;
 using TravelExperts.Models.ViewModel;
-using TravelExperts.DataAccess;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore.Migrations.Operations;
+// Written by: Ben Wood
+// Refactored by: Robbie Soriano, Aiden Giesbrecht
 
 namespace TravelExperts.Controllers
 {
     public class PackageController : Controller
     {
-        private TravelExpertsContext _context { get; set; }
+        private readonly IUnitOfWork _unitOfWork;
 
-        public PackageController(TravelExpertsContext context)
+        public PackageController(IUnitOfWork unitOfWork)
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            Package package1 = _context.Packages.First(p => p.PackageId == 1);
-            Package package2 = _context.Packages.First(p => p.PackageId == 2);
-            Package package3 = _context.Packages.First(p => p.PackageId == 3);
-            Package package4 = _context.Packages.First(p => p.PackageId == 4);
-            //IndexPackageViewModel indexPackageViewModel = new IndexPackageViewModel();
-            var cards = new List<CardVM>
+            var package = await _unitOfWork.Packages.GetAllAsync();
+            var cards = new List<CardVM>();
+
+            var imageMap = new Dictionary<string, string>
             {
 
-                new CardVM
-                {
-                    Name = package1.PkgName,
-                    ImageUrl = "img/Caribbean3.jpg",
-                    Desc = package1.PkgDesc,              
-                },
-                new CardVM
-                {
-                    Name = package2.PkgName,
-                    ImageUrl = "img/Hawaii.jpg",
-                    Desc = package2.PkgDesc,
-                },
-                new CardVM
-                {
-                    Name = package3.PkgName,
-                    ImageUrl = "img/Japan.jpg",
-                    Desc = package3.PkgDesc,
-                },
-                new CardVM
-                {
-                    Name = package4.PkgName,
-                    ImageUrl = "img/Paris.jpg",
-                    Desc = package4.PkgDesc,
-                }
+                { "Caribbean New Year", "img/Caribbean3.jpg" },
+                { "Polynesian Paradise", "img/Hawaii.jpg" },
+                { "Asian Expedition", "img/Japan.jpg" },
+                { "European Vacation", "img/Paris.jpg" }
             };
-            
+
+            foreach (var p in package)
+            {
+                cards.Add(new CardVM
+                {
+                    Name = p.PkgName,
+                    ImageUrl = imageMap.ContainsKey(p.PkgName) ? imageMap[p.PkgName] : "img/default.jpg", // Default image if no match
+                    Desc = p.PkgDesc
+                });
+            }
+
             return View(cards);
         }
 
-        public IActionResult BuyPackage(int packageId)
+        public async Task<IActionResult> BuyPackage(int packageId)
         {
             List<TripType> tripTypeLabels = new List<TripType>
             {
-                new TripType{ ID = "B", TripTypeName = "Business" },
-                new TripType{ ID = "L", TripTypeName = "Leisure" },
-                new TripType{ ID = "G", TripTypeName = "Group" }
+                new TripType { ID = "B", TripTypeName = "Business" },
+                new TripType { ID = "L", TripTypeName = "Leisure" },
+                new TripType { ID = "G", TripTypeName = "Group" }
             };
-            var tripTypes = new SelectList(tripTypeLabels, "ID", "TripTypeName").ToList();
-            ViewBag.TripTypes = tripTypes;
-  
-            var package = PackageManager.GetPackageByID(_context, packageId);
-            ViewBag.PkgName = package.PkgName;
-            ViewBag.PkgDesc = package.PkgDesc;
-            ViewBag.PackageId = package.PackageId;
-            //ViewBag.PkgName = PackageManager.GetPackageName(PackageManager.GetPackage(_context, 1));
 
+            var packages = await _unitOfWork.Packages.GetAllAsync();
+            var package = packages.FirstOrDefault(p => p.PackageId == packageId);
             if (package == null)
             {
                 return NotFound();
             }
 
+            var viewModel = new BuyPackageViewModel
+            {
+                Package = package,
+                TripTypes = tripTypeLabels,
+                Booking = new Booking()
+            };
+            ViewBag.PkgName = package.PkgName;
+            ViewBag.PkgDesc = package.PkgDesc;
 
-            return View();
+            return View(viewModel);
         }
 
-        [HttpPost]
-        public ActionResult BuyPackage(IFormCollection collection)
-        {
-            try
-            {
-                BookingManager.AddBooking(_context, new Booking
-                {
+        //[HttpPost]
+        //public ActionResult BuyPackage(IFormCollection collection)
+        //{
+        //    try
+        //    {
+        //        BookingManager.AddBooking(_context, new Booking
+        //        {
 
-                    BookingDate = DateTime.Now,
-                    BookingNo = "123456",
-                    TravelerCount = Convert.ToDouble(collection["TravelerCount"]),
-                    CustomerId = 143,
-                    TripTypeId = collection["TripTypeId"],
-                    PackageId = 1
+        //            BookingDate = DateTime.Now,
+        //            BookingNo = "123456",
+        //            TravelerCount = Convert.ToDouble(collection["TravelerCount"]),
+        //            CustomerId = 143,
+        //            TripTypeId = collection["TripTypeId"],
+        //            PackageId = 1
 
-                });
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
+        //        });
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    catch
+        //    {
 
-                return View();
-            }
-        }
+        //        return View();
+        //    }
+        //}
     }
 }
