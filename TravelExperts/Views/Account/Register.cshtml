@@ -139,10 +139,17 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.7/jquery.inputmask.min.js"></script>
     <script>
 
         // Ajax for validation
         $(document).ready(function () {
+
+            $('#Input_CustHomePhone').inputmask("(999) 999-9999");
+            $('#Input_CustBusPhone').inputmask("(999) 999-9999");
+            $('#Input_CustPostal').inputmask("A9A 9A9");
+
             function checkRequirements() {
                 var password = $('#Input_Password').val();
                 var confirmPassword = $('#Input_ConfirmPassword').val();
