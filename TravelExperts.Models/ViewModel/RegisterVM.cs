@@ -28,6 +28,7 @@ namespace TravelExperts.Models.ViewModel
             [DataType(DataType.Password)]
             public string Password { get; set; }
 
+            [Required(ErrorMessage = "Confirm Password is required")]
             [DataType(DataType.Password)]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
@@ -47,6 +48,7 @@ namespace TravelExperts.Models.ViewModel
             [Required(ErrorMessage = "Province is required.")]
             public string CustProv { get; set; }
 
+            [RegularExpression(@"^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$", ErrorMessage = "Invalid Postal Code")]
             [Required(ErrorMessage = "Postal code is required.")]
             public string CustPostal { get; set; }
 

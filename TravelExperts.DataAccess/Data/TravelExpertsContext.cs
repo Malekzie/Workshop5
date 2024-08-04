@@ -88,6 +88,9 @@ public partial class TravelExpertsContext : DbContext
                 .HasForeignKey(d => d.CustomerId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_User_Customer");
+
+            entity.HasIndex(e => e.Username)
+               .IsUnique();
         });
 
         modelBuilder.Entity<Package>(entity =>

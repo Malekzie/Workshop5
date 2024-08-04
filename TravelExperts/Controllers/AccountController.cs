@@ -104,6 +104,14 @@ namespace TravelExperts.Controllers
             model.ReturnUrl = returnUrl;
             if (ModelState.IsValid)
             {
+                var existingUser = _unitOfWork.Users.GetUser(model.Input.Username);
+                if (existingUser != null)
+                {
+                    ModelState.AddModelError("", "Username already exists.");
+                    model.ProvinceList = GetProvinces();
+                    return View(model);
+                }
+
                 var customer = new Customer
                 {
                     CustFirstName = model.Input.CustFirstName,

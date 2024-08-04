@@ -17,6 +17,16 @@
             <div class="col-md-12">
                 <form id="registerForm" class="row" asp-route-returnUrl="@Model.ReturnUrl" method="post">
                     <h3 class="border-bottom pb-3 mb-4 text-secondary text-center">Create a new account.</h3>
+
+                    <!-- Requirements Section -->
+                    <div id="requirements">
+                        <h4>Requirements</h4>
+                        <ul>
+                            <li class="text-danger" id="req-password">Password must be entered twice and must match.</li>
+                            <li class="text-danger" id="req-postal">Postal Code must be in the correct format (e.g., A1A 1A1).</li>
+                            <li class="text-danger" id="req-phone">Phone number must be composed of numeric digits and include an area code.</li>
+                        </ul>
+                    </div>
                     <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
 
                     <!-- Email -->
@@ -26,6 +36,7 @@
                         <span asp-validation-for="Input.Email" class="text-danger"></span>
                     </div>  
                     
+                    <!-- Username -->
                     <div class="form-floating mb-3 col-md-6">
                         <input asp-for="Input.Username" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
                         <label asp-for="Input.Username" class="ms-2 text-muted">Username <span class="text-danger">*</span></label>
@@ -127,4 +138,46 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+
+        // Ajax for validation
+        $(document).ready(function () {
+            function checkRequirements() {
+                var password = $('#Input_Password').val();
+                var confirmPassword = $('#Input_ConfirmPassword').val();
+                var postalCodePattern = /^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$/;
+                var postalCode = $('#Input_CustPostal').val();
+                var phonePattern = /^\d{10}$/;
+                var phoneNumber = $('#Input_CustHomePhone').val();
+
+                var passwordValid = password && confirmPassword && password === confirmPassword;
+                var postalCodeValid = postalCodePattern.test(postalCode);
+                var phoneValid = phonePattern.test(phoneNumber);
+
+
+                if (passwordValid) {
+                    $('#req-password').hide();
+                } else {
+                    $('#req-password').show();
+                }
+
+                if (postalCodeValid) {
+                    $('#req-postal').hide();
+                } else {
+                    $('#req-postal').show();
+                }
+
+                if (passwordValid && postalCodeValid) {
+                    $('#requirements').hide();
+                } else {
+                    $('#requirements').show();
+                }
+            }
+
+            $('#Input_Password, #Input_ConfirmPassword').on('input', checkRequirements);
+            $('#Input_CustPostal').on('input', checkRequirements);
+            $('#Input_CustHomePhone').on('input', checkRequirements);
+        });
+    </script>
 }
