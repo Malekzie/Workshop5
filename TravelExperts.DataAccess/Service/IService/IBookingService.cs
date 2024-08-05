@@ -8,6 +8,6 @@ namespace TravelExperts.DataAccess.Service.IService
 {
     public interface IBookingService: IService<Booking>
     {
-        IEnumerable<Booking> GetOrderHistory(int customerId);
+       Task<IEnumerable<Booking>> GetOrderHistory(int customerId);
     }
 }

@@ -165,11 +165,24 @@ namespace TravelExperts.Controllers
             model.ProvinceList = StaticDefinition.GetProvinces();
             return View(model);
         }
-        public IActionResult History()
+
+        public async Task<IActionResult> History()
         {
-            AccountHistoryVM accountHistoryVM = new AccountHistoryVM();
-            accountHistoryVM.Customers = _unitOfWork.Customers.GetAccount(141);
-            accountHistoryVM.Bookings = _unitOfWork.Bookings.GetOrderHistory(141);
+            Claim customerIdClaim = User.FindFirst("CustomerId");
+            if (customerIdClaim == null)
+            {
+                // Handle the case where the customer ID claim is not found
+                return RedirectToAction("Login", "Account");
+            }
+
+            var customerId = int.Parse(customerIdClaim.Value);
+
+            var accountHistoryVM = new AccountHistoryVM
+            {
+                Customers = _unitOfWork.Customers.GetAccount(customerId),
+                Bookings = await _unitOfWork.Bookings.GetOrderHistory(customerId)
+            };
+
             return View(accountHistoryVM);
         }
 

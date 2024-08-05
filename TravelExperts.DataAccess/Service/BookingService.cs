@@ -13,7 +13,7 @@ namespace TravelExperts.DataAccess.Service
         {
             _context = context;
         }
-        public IEnumerable<Booking> GetOrderHistory(int customerId)
+        public async Task<IEnumerable<Booking>> GetOrderHistory(int customerId)
         {
             List<Booking> bookingList = _context.Bookings.Where(b => b.CustomerId == customerId).ToList();
             return bookingList;
