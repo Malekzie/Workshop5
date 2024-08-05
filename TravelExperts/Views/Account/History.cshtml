@@ -38,7 +38,7 @@
                                 @Html.DisplayFor(AccountHistoryVM => item.BookingNo)
                             </td>
                             <td>
-                                @Html.Raw(item.BookingDate.ToShortDateString())
+                                @Html.Raw(item.BookingDate?.ToShortDateString())
                             </td>
                             <td>
                                 @Html.DisplayFor(AccountHistoryVM => item.TravelerCount)

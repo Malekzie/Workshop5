@@ -7,5 +7,6 @@ namespace TravelExperts.DataAccess.Repository.IRepository
         void RegisterCustomer(Customer customer);
 
         // Add more methods here
+        Customer GetAccount(int customerId);
     }
 }

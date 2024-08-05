@@ -31,8 +31,6 @@ public partial class TravelExpertsContext : DbContext
 
     public virtual DbSet<Supplier> Suppliers { get; set; }
 
-    public virtual DbSet<Booking> Bookings { get; set; }
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
      

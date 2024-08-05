@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Net;
 using System.Security.Claims;
 using TravelExperts.DataAccess.Models;
 using TravelExperts.DataAccess.Service.IService;
@@ -162,6 +164,13 @@ namespace TravelExperts.Controllers
             ModelState.AddModelError("", "Invalid registration attempt.");
             model.ProvinceList = StaticDefinition.GetProvinces();
             return View(model);
+        }
+        public IActionResult History()
+        {
+            AccountHistoryVM accountHistoryVM = new AccountHistoryVM();
+            accountHistoryVM.Customers = _unitOfWork.Customers.GetAccount(143);       //AccountManager.GetAccount(_unitOfWork.Bookings, 143);
+            accountHistoryVM.Bookings = _unitOfWork.Bookings.GetOrderHistory(143);
+            return View(accountHistoryVM);
         }
 
         /// <summary>
