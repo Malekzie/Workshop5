@@ -168,8 +168,8 @@ namespace TravelExperts.Controllers
         public IActionResult History()
         {
             AccountHistoryVM accountHistoryVM = new AccountHistoryVM();
-            accountHistoryVM.Customers = _unitOfWork.Customers.GetAccount(143);       //AccountManager.GetAccount(_unitOfWork.Bookings, 143);
-            accountHistoryVM.Bookings = _unitOfWork.Bookings.GetOrderHistory(143);
+            accountHistoryVM.Customers = _unitOfWork.Customers.GetAccount(141);
+            accountHistoryVM.Bookings = _unitOfWork.Bookings.GetOrderHistory(141);
             return View(accountHistoryVM);
         }
 

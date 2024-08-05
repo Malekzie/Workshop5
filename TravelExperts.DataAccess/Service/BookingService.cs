@@ -13,9 +13,9 @@ namespace TravelExperts.DataAccess.Service
         {
             _context = context;
         }
-        public static List<Booking> GetOrderHistory(TravelExpertsContext db, int customerId)
+        public IEnumerable<Booking> GetOrderHistory(int customerId)
         {
-            List<Booking> bookingList = db.Bookings.Where(b => b.CustomerId == customerId).ToList();
+            List<Booking> bookingList = _context.Bookings.Where(b => b.CustomerId == customerId).ToList();
             return bookingList;
         }
     }

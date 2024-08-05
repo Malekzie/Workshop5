@@ -15,9 +15,9 @@ namespace TravelExperts.DataAccess.Service
             _context.Customers.Add(customer);
             _context.SaveChanges();
         }
-        public static Customer GetAccount(TravelExpertsContext db, int customerId)
+        public Customer GetAccount(int customerId)
         {
-            Customer? customer = db.Customers.First(c => c.CustomerId == customerId);
+            Customer? customer = _context.Customers.First(c => c.CustomerId == customerId);
             return customer;
         }
     }
