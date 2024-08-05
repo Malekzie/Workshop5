@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TravelExperts.DataAccess.Models
 {
@@ -12,19 +8,21 @@ namespace TravelExperts.DataAccess.Models
         [Key]
         public int BookingId { get; set; }
 
-        public DateTime ?BookingDate { get; set; }
-                      
-        public string ?BookingNo { get; set; }
+        public DateTime? BookingDate { get; set; }
 
-        public double ?TravelerCount { get; set; }
+        public string? BookingNo { get; set; }
 
-        public int ?CustomerId { get; set; }
+        [Required(ErrorMessage = "Traveler count is required")]
+        [Range(1, double.MaxValue, ErrorMessage = "Traveler count must be at least 1.")]
+        public double? TravelerCount { get; set; }
+
+        public int? CustomerId { get; set; }
 
         [StringLength(1)]
-        public string ?TripTypeId { get; set; }
+        [Required(ErrorMessage = "Trip type is required")]
+        public string? TripTypeId { get; set; }
 
-        public int ?PackageId { get; set; }
+        [Required(ErrorMessage = "Package ID is required")]
+        public int? PackageId { get; set; }
     }
 }
-    
-
