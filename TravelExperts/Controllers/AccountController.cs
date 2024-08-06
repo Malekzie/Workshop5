@@ -134,5 +134,80 @@ namespace TravelExperts.Controllers
 
             return View(accountHistoryVM);
         }
+
+        public async Task<IActionResult> EditAccount()
+        {
+            var customerIdClaim = User.FindFirst("CustomerId");
+            if (customerIdClaim == null)
+            {
+                return RedirectToAction("Login", "Auth");
+            }
+
+            var userIdClaim = User.FindFirst("UserId");
+            if (userIdClaim == null)
+            {
+                return RedirectToAction("Login", "Auth");
+            }
+
+            var customerId = int.Parse(customerIdClaim.Value);
+            var userId = int.Parse(userIdClaim.Value);
+            var customer = await _unitOfWork.Customers.GetByIdAsync(customerId);
+            var user = await _unitOfWork.Users.GetByIdAsync(userId);
+
+            if (customer == null || user == null)
+            {
+                return NotFound("Customer or User not found.");
+            }
+
+            var model = new CredentialsVM
+            {
+                Email = customer.CustEmail
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditAccount(CredentialsVM model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var customerIdClaim = User.FindFirst("CustomerId");
+            if (customerIdClaim == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var userIdClaim = User.FindFirst("UserId");
+            if (userIdClaim == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var customerId = int.Parse(customerIdClaim.Value);
+            var userId = int.Parse(userIdClaim.Value);
+            var customer = await _unitOfWork.Customers.GetByIdAsync(customerId);
+            var user = await _unitOfWork.Users.GetByIdAsync(userId);
+
+            if (customer == null || user == null)
+            {
+                return NotFound("Customer or User not found.");
+            }
+
+            // Update email
+            customer.CustEmail = model.Email;
+            _unitOfWork.Customers.Update(customer);
+
+            user.Password = model.Password;
+            _unitOfWork.Users.Update(user);
+
+            await _unitOfWork.Save();
+
+            return RedirectToAction("Index");
+        }
     }
 }

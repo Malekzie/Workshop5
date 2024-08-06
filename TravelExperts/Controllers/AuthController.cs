@@ -44,7 +44,8 @@ namespace TravelExperts.Controllers
                 {
                     new Claim(ClaimTypes.Name, username),
                     new Claim("FullName", customer.CustFirstName + " " + customer.CustLastName),
-                    new Claim("CustomerId", customer.CustomerId.ToString()) // Add CustomerId claim
+                    new Claim("CustomerId", customer.CustomerId.ToString()),
+                    new Claim("UserId", user.UserId.ToString())
                 };
 
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
