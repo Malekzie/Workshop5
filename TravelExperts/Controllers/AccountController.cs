@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
 using System.Security.Claims;
@@ -64,6 +65,45 @@ namespace TravelExperts.Controllers
             return View(accountVM);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Details(AccountVM model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var customerIdClaim = User.FindFirst("CustomerId");
+            if (customerIdClaim == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var customerId = int.Parse(customerIdClaim.Value);
+            var customer = await _unitOfWork.Users.GetCustomerByID(customerId);
+
+            if (customer == null)
+            {
+                return NotFound("Customer not found.");
+            }
+
+            customer.CustFirstName = model.FirstName;
+            customer.CustLastName = model.LastName;
+            customer.CustBusPhone = model.BusinessPhone;
+            customer.CustHomePhone = model.HomePhone;
+            customer.CustAddress = model.Address;
+            customer.CustCity = model.City;
+            customer.CustProv = model.Province;
+            customer.CustPostal = model.PostalCode;
+            customer.CustCountry = model.Country;
+
+            _unitOfWork.Customers.Update(customer);
+            await _unitOfWork.Save();
+
+            return RedirectToAction("Index");
+        }
+
         /// <summary>
         /// Displays the login page.
         /// </summary>
@@ -86,7 +126,7 @@ namespace TravelExperts.Controllers
                 return View();
             }
 
-            var customer = await _unitOfWork.Users.GetCustomerByID(user.UserId);
+            var customer = await _unitOfWork.Users.GetById(user.UserId);
 
             if (customer != null)
             {

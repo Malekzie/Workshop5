@@ -34,6 +34,16 @@ namespace TravelExperts.DataAccess.Service
             return user?.Customer;
         }
 
+
+        public async Task<Customer> GetById(int userId)
+        {
+            var user = await _context.Users
+                .Include(u => u.Customer)
+                .FirstOrDefaultAsync(u => u.UserId == userId);
+
+            return user.Customer;
+        }
+
         public async Task<User> GetUserById(int customerId)
         {
             return _context.Users.SingleOrDefault(c => c.UserId == customerId);
