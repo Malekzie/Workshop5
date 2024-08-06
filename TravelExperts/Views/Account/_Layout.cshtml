@@ -45,10 +45,12 @@
                 </li>
             </ul>
             <div class="sidebar-footer">
-                <a href="#" class="sidebar-link">
-                    <i class="lni lni-exit"></i>
-                    <span>Logout</span>
-                </a>
+                <form asp-action="Logout" method="post" class="d-inline">
+                    <button type="submit" class="btn btn-link sidebar-link">
+                        <i class="lni lni-exit"></i>
+                        <span>Logout</span>
+                    </button>
+                </form>
             </div>
         </aside>
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
@@ -58,5 +60,6 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", required: false)
 </body>
 </html>
