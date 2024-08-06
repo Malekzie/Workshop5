@@ -21,6 +21,13 @@ namespace TravelExperts.DataAccess.Service
         {
             return await _context.Packages.FirstOrDefaultAsync(filter);
         }
+        public decimal? GetPackagePrice(int id)
+        {
+            decimal? price = _context.Packages.First(p => p.PackageId == id).PkgBasePrice;
+            price += _context.Packages.First(p => p.PackageId == id).PkgAgencyCommission;
+            return price;
+        }
+
     }
 
 }

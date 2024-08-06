@@ -6,5 +6,6 @@ namespace TravelExperts.DataAccess.Service.IService
     {
         List<Package> GetById(int id);
         Task<Package> GetFirstOrDefaultAsync(Expression<Func<Package, bool>> filter);
+        decimal? GetPackagePrice(int id);
     }
 }
