@@ -5,34 +5,34 @@
 }
 
 <div class="container">
-    <form class="row" asp-action="Details" method="post">
+    <form class="row" asp-action="Details" method="post" id="accountForm">
         <h3 class="border-bottom pb-3 mb-4 text-secondary">Account Details</h3>
 
         <!-- Personal Details Section -->
         <div class="col-md-6">
             <div class="form-floating mb-3">
-                <input asp-for="FirstName" class="form-control" placeholder="First Name" value="@Model.FirstName" />
+                <input asp-for="FirstName" class="form-control" placeholder="First Name" value="@Model.FirstName" disabled />
                 <label asp-for="FirstName">First Name</label>
                 <span asp-validation-for="FirstName" class="text-danger"></span>
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-floating mb-3">
-                <input asp-for="LastName" class="form-control" placeholder="Last Name" value="@Model.LastName" />
+                <input asp-for="LastName" class="form-control" placeholder="Last Name" value="@Model.LastName" disabled />
                 <label asp-for="LastName">Last Name</label>
                 <span asp-validation-for="LastName" class="text-danger"></span>
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-floating mb-3">
-                <input asp-for="BusinessPhone" class="form-control" placeholder="Business Phone" value="@Model.BusinessPhone" />
+                <input asp-for="BusinessPhone" class="form-control" placeholder="Business Phone" value="@Model.BusinessPhone" disabled />
                 <label asp-for="BusinessPhone">Business Phone</label>
                 <span asp-validation-for="BusinessPhone" class="text-danger"></span>
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-floating mb-3">
-                <input asp-for="HomePhone" class="form-control" placeholder="Home Phone" value="@Model.HomePhone" />
+                <input asp-for="HomePhone" class="form-control" placeholder="Home Phone" value="@Model.HomePhone" disabled />
                 <label asp-for="HomePhone">Home Phone</label>
                 <span asp-validation-for="HomePhone" class="text-danger"></span>
             </div>
@@ -45,43 +45,66 @@
 
         <div class="col-md-12">
             <div class="form-floating mb-3">
-                <input asp-for="Address" class="form-control" placeholder="Address" value="@Model.Address" />
+                <input asp-for="Address" class="form-control" placeholder="Address" value="@Model.Address" disabled />
                 <label asp-for="Address">Address</label>
                 <span asp-validation-for="Address" class="text-danger"></span>
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-floating mb-3">
-                <input asp-for="City" class="form-control" placeholder="City" value="@Model.City" />
+                <input asp-for="City" class="form-control" placeholder="City" value="@Model.City" disabled />
                 <label asp-for="City">City</label>
                 <span asp-validation-for="City" class="text-danger"></span>
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-floating mb-3">
-                <input asp-for="Province" class="form-control" placeholder="Province" value="@Model.Province" />
+                <input asp-for="Province" class="form-control" placeholder="Province" value="@Model.Province" disabled />
                 <label asp-for="Province">Province</label>
                 <span asp-validation-for="Province" class="text-danger"></span>
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-floating mb-3">
-                <input asp-for="PostalCode" class="form-control" placeholder="Postal Code" value="@Model.PostalCode" />
+                <input asp-for="PostalCode" class="form-control" placeholder="Postal Code" value="@Model.PostalCode" disabled />
                 <label asp-for="PostalCode">Postal Code</label>
                 <span asp-validation-for="PostalCode" class="text-danger"></span>
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-floating mb-3">
-                <input asp-for="Country" class="form-control" placeholder="Country" value="@Model.Country" />
+                <input asp-for="Country" class="form-control" placeholder="Country" value="@Model.Country" disabled />
                 <label asp-for="Country">Country</label>
                 <span asp-validation-for="Country" class="text-danger"></span>
             </div>
         </div>
 
-
         <div class="col-12">
-            <button type="submit" class="w-100 btn btn-lg btn-warning">Update</button>
+            <button type="button" class="w-100 btn btn-lg btn-warning" id="updateButton" onclick="enableEdit()">Update</button>
+            <div id="editButtons" class="d-none mt-3 row">
+                <div class="col-md-6">
+                    <button type="submit" class="w-100 btn btn-lg btn-success">Save</button>
+                </div>
+                <div class="col-md-6">
+                    <button type="button" class="w-100 btn btn-lg btn-secondary" onclick="cancelEdit()">Cancel</button>
+                </div>
+            </div>
         </div>
     </form>
 </div>
+
+<script>
+    function enableEdit() {
+        const inputs = document.querySelectorAll('#accountForm input');
+        inputs.forEach(input => input.disabled = false);
+        document.getElementById('updateButton').classList.add('d-none');
+        document.getElementById('editButtons').classList.remove('d-none');
+    }
+
+    function cancelEdit() {
+        const inputs = document.querySelectorAll('#accountForm input');
+        inputs.forEach(input => input.disabled = true);
+        document.getElementById('updateButton').classList.remove('d-none');
+        document.getElementById('editButtons').classList.add('d-none');
+    }
+</script>
