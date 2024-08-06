@@ -14,6 +14,8 @@ namespace TravelExperts.DataAccess.Service.IService
         // Register user
         void RegisterUser(User user);
 
+        Task<User> GetUserById(int customerId);
+
         // Gets customer through user
         Task<Customer> GetCustomerByID(int userId);
     }
