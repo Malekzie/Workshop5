@@ -18,7 +18,6 @@ namespace TravelExperts.Models.ViewModel
         public class InputModel
         {
             [EmailAddress]
-            [Required(ErrorMessage = "Email is required.")]
             public string Email { get; set; }
 
             [Required(ErrorMessage = "Username is required.")]

@@ -1,0 +1,191 @@
+﻿@model RegisterVM
+
+@{
+    ViewData["Title"] = "Register";
+    Layout= "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card shadow border-0 mt-4">
+    <div class="card-header bg-dark bg-gradient ml-0 py-4">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="py-2 text-white-50">Register</h2>
+            </div>
+        </div>
+    </div>
+    <div class="card-body p-4">
+        <div class="row pt-3">
+            <div class="col-md-12">
+                <form id="registerForm" class="row" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                    <h3 class="border-bottom pb-3 mb-4 text-secondary text-center">Create a new account.</h3>
+
+                    <!-- Requirements Section -->
+                    <div id="requirements">
+                        <h4>Requirements</h4>
+                        <ul>
+                            <li class="text-danger" id="req-password">Password must be entered twice and must match.</li>
+                            <li class="text-danger" id="req-postal">Postal Code must be in the correct format (e.g., A1A 1A1).</li>
+                            <li class="text-danger" id="req-phone">Phone number must be composed of numeric digits and include an area code.</li>
+                        </ul>
+                    </div>
+                    <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+
+                    <!-- Email -->
+                    <div class="form-floating mb-3 col-md-6">
+                        <input asp-for="Input.Email" class="form-control" autocomplete="" aria-required="true" placeholder="name@example.com" />
+                        <label asp-for="Input.Email" class="ms-2 text-muted">Email</label>
+                        <span asp-validation-for="Input.Email" class="text-danger"></span>
+                    </div>  
+                    
+                    <!-- Username -->
+                    <div class="form-floating mb-3 col-md-6">
+                        <input asp-for="Input.Username" class="form-control" autocomplete="" aria-required="true" placeholder="name@example.com" />
+                        <label asp-for="Input.Username" class="ms-2 text-muted">Username <span class="text-danger">*</span></label>
+                        <span asp-validation-for="Input.Username" class="text-danger"></span>
+                    </div>
+
+                    <!-- Password -->
+                    <div class="form-floating mb-3 col-6">
+                        <input asp-for="Input.Password" class="form-control" autocomplete="new-" aria-required="true" placeholder="password" />
+                        <label asp-for="Input.Password" class="ms-2 text-muted">Password <span class="text-danger">*</span></label>
+                        <span asp-validation-for="Input.Password" class="text-danger"></span>
+                    </div>
+
+                    <!-- Confirm Password -->
+                    <div class="form-floating mb-3 col-6">
+                        <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
+                        <label asp-for="Input.ConfirmPassword" class="ms-2 text-muted">Confirm Password <span class="text-danger">*</span></label>
+                        <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                    </div>
+
+                    <p class="divider-text d-flex pt-3">Personal Details</p>
+
+                    <!-- First Name -->
+                    <div class="form-floating mb-3 col-6">
+                        <input asp-for="Input.CustFirstName" class="form-control" placeholder="First Name" />
+                        <label asp-for="Input.CustFirstName" class="ms-2 text-muted">First Name <span class="text-danger">*</span></label>
+                        <span asp-validation-for="Input.CustFirstName" class="text-danger"></span>
+                    </div>
+
+                    <!-- Last Name -->
+                    <div class="form-floating mb-3 col-6">
+                        <input asp-for="Input.CustLastName" class="form-control" placeholder="Last Name" />
+                        <label asp-for="Input.CustLastName" class="ms-2 text-muted">Last Name <span class="text-danger">*</span></label>
+                        <span asp-validation-for="Input.CustLastName" class="text-danger"></span>
+                    </div>
+
+                    <!-- Phone -->
+                    <div class="form-floating mb-3 col-6">
+                        <input asp-for="Input.CustBusPhone" class="form-control" placeholder="Phone" />
+                        <label asp-for="Input.CustBusPhone" class="ms-2 text-muted">Business Phone</label>
+                        <span asp-validation-for="Input.CustBusPhone" class="text-danger"></span>
+                    </div>
+
+                    <!-- Home Phone -->
+                    <div class="form-floating mb-3 col-6">
+                        <input asp-for="Input.CustHomePhone" class="form-control" placeholder="Home Phone" />
+                        <label asp-for="Input.CustHomePhone" class="ms-2 text-muted">Home Phone <span class="text-danger">*</span></label>
+                        <span asp-validation-for="Input.CustHomePhone" class="text-danger"></span>
+                    </div>
+
+                    <!-- Address -->
+                    <div class="form-floating mb-3 col-12">
+                        <input asp-for="Input.CustAddress" class="form-control" placeholder="Address" />
+                        <label asp-for="Input.CustAddress" class="ms-2 text-muted">Address <span class="text-danger">*</span></label>
+                        <span asp-validation-for="Input.CustAddress" class="text-danger"></span>
+                    </div>
+
+                    <!-- City -->
+                    <div class="form-floating mb-3 col-6">
+                        <input asp-for="Input.CustCity" class="form-control" placeholder="City" />
+                        <label asp-for="Input.CustCity" class="ms-2 text-muted">City <span class="text-danger">*</span></label>
+                        <span asp-validation-for="Input.CustCity" class="text-danger"></span>
+                    </div>
+
+                    <!-- Province -->
+                    <div class="form-floating mb-3 col-6">
+                        <select asp-for="Input.CustProv" class="form-select">
+                            <option disabled selected>Select a province</option>
+                            @foreach (var province in Model.ProvinceList)
+                            {
+                                <option value="@province.Key">@province.Value</option>
+                            }
+                        </select>
+                        <label asp-for="Input.CustProv" class="ms-2 text-muted">Province <span class="text-danger">*</span></label>
+                    </div>
+
+                    <!-- Postal Code -->
+                    <div class="form-floating mb-3 col-6">
+                        <input asp-for="Input.CustPostal" class="form-control" placeholder="Postal Code" maxlength="7" />
+                        <label asp-for="Input.CustPostal" class="ms-2 text-muted">Postal Code <span class="text-danger">*</span></label>
+                        <span asp-validation-for="Input.CustPostal" class="text-danger"></span>
+                    </div>
+
+                    <!-- Country -->
+                    <div class="form-floating mb-3 col-6">
+                        <input asp-for="Input.CustCountry" class="form-control" placeholder="Country" />
+                        <label asp-for="Input.CustCountry" class="ms-2 text-muted">Country <span class="text-danger">*</span></label>
+                        <span asp-validation-for="Input.CustCountry" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-12">
+                        <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-dark">Register</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+   
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.7/jquery.inputmask.min.js"></script>
+    <script>
+
+        // Ajax for validation
+        $(document).ready(function () {
+
+            $('#Input_CustHomePhone').inputmask("(999) 999-9999");
+            $('#Input_CustBusPhone').inputmask("(999) 999-9999");
+            $('#Input_CustPostal').inputmask("A9A 9A9");
+
+            function checkRequirements() {
+                var password = $('#Input_Password').val();
+                var confirmPassword = $('#Input_ConfirmPassword').val();
+                var postalCodePattern = /^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$/;
+                var postalCode = $('#Input_CustPostal').val();
+                var phonePattern = /^\d{10}$/;
+                var phoneNumber = $('#Input_CustHomePhone').val();
+
+                var passwordValid = password && confirmPassword && password === confirmPassword;
+                var postalCodeValid = postalCodePattern.test(postalCode);
+                var phoneValid = phonePattern.test(phoneNumber);
+
+
+                if (passwordValid) {
+                    $('#req-password').hide();
+                } else {
+                    $('#req-password').show();
+                }
+
+                if (postalCodeValid) {
+                    $('#req-postal').hide();
+                } else {
+                    $('#req-postal').show();
+                }
+
+                if (passwordValid && postalCodeValid) {
+                    $('#requirements').hide();
+                } else {
+                    $('#requirements').show();
+                }
+            }
+
+            $('#Input_Password, #Input_ConfirmPassword').on('input', checkRequirements);
+            $('#Input_CustPostal').on('input', checkRequirements);
+            $('#Input_CustHomePhone').on('input', checkRequirements);
+        });
+    </script>
+}

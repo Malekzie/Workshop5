@@ -1,10 +1,15 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using System.Net;
 using System.Security.Claims;
 using TravelExperts.DataAccess.Models;
+using TravelExperts.DataAccess.Service;
 using TravelExperts.DataAccess.Service.IService;
 using TravelExperts.Models.ViewModel;
+using TravelExperts.Utils;
 
 namespace TravelExperts.Controllers
 {
@@ -28,157 +33,181 @@ namespace TravelExperts.Controllers
         /// <summary>
         /// Displays the index page.
         /// </summary>
-        public IActionResult Index() => View();
-
-        /// <summary>
-        /// Displays the login page.
-        /// </summary>
-        [HttpGet]
-        public IActionResult Login() => View();
-
-        /// <summary>
-        /// Handles the login POST request.
-        /// </summary>
-        /// <param name="username">The username entered by the user.</param>
-        /// <param name="password">The password entered by the user.</param>
-        /// <returns>A task that represents the asynchronous operation. The task result contains the IActionResult.</returns>
-        [HttpPost]
-        public async Task<IActionResult> Login(string username, string password)
+        public async Task<IActionResult> Index()
         {
-            var user = _unitOfWork.Users.GetUser(username);
-            var customer = await _unitOfWork.Users.GetCustomerByID(user.UserId);
-
-            if (user != null)
+            var customerIdClaim = User.FindFirst("CustomerId");
+            if (customerIdClaim == null)
             {
-                var claims = new List<Claim>
-                {
-                    new Claim(ClaimTypes.Name, username),
-                    new Claim("FullName", customer.CustFirstName + " " + customer.CustLastName),
-                };
-
-                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-
-                var authProperties = new AuthenticationProperties
-                {
-                    IsPersistent = true,
-                };
-
-                await HttpContext.SignInAsync(
-                    CookieAuthenticationDefaults.AuthenticationScheme,
-                    new ClaimsPrincipal(claimsIdentity),
-                    authProperties);
-
-                return RedirectToAction("Index", "Home");
-            }
-
-            ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-            return View();
-        }
-
-        /// <summary>
-        /// Displays the registration page.
-        /// </summary>
-        /// <param name="returnUrl">The URL to return to after registration.</param>
-        /// <returns>The registration view.</returns>
-        public IActionResult Register(string returnUrl = null)
-        {
-            var model = new RegisterVM
-            {
-                Input = new RegisterVM.InputModel(),
-                ProvinceList = GetProvinces(),
-                ReturnUrl = returnUrl
-            };
-            return View(model);
-        }
-
-        /// <summary>
-        /// Handles the registration POST request.
-        /// </summary>
-        /// <param name="model">The registration view model containing user input.</param>
-        /// <param name="returnUrl">The URL to return to after registration.</param>
-        /// <returns>An IActionResult representing the result of the action.</returns>
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Register(RegisterVM model, string returnUrl = null)
-        {
-            model.ReturnUrl = returnUrl;
-            if (ModelState.IsValid)
-            {
-                var existingUser = _unitOfWork.Users.GetUser(model.Input.Username);
-                if (existingUser != null)
-                {
-                    ModelState.AddModelError("", "Username already exists.");
-                    model.ProvinceList = GetProvinces();
-                    return View(model);
-                }
-
-                var customer = new Customer
-                {
-                    CustFirstName = model.Input.CustFirstName,
-                    CustLastName = model.Input.CustLastName,
-                    CustAddress = model.Input.CustAddress,
-                    CustCity = model.Input.CustCity,
-                    CustProv = model.Input.CustProv,
-                    CustPostal = model.Input.CustPostal,
-                    CustCountry = model.Input.CustCountry,
-                    CustHomePhone = model.Input.CustHomePhone,
-                    CustBusPhone = model.Input.CustBusPhone,
-                    CustEmail = model.Input.Email
-                };
-
-                _unitOfWork.Customers.RegisterCustomer(customer);
-
-                var user = new User
-                {
-                    Username = model.Input.Username,
-                    Password = model.Input.Password,
-                    CustomerId = customer.CustomerId
-                };
-
-                _unitOfWork.Users.RegisterUser(user);
-                _unitOfWork.Save();
-
                 return RedirectToAction("Login", "Account");
             }
 
-            ModelState.AddModelError("", "Invalid registration attempt.");
-            model.ProvinceList = GetProvinces();
+            var customerId = int.Parse(customerIdClaim.Value);
+            var customer = await _unitOfWork.Users.GetCustomerByID(customerId);
+
+            if (customer == null)
+            {
+                return NotFound("Customer not found.");
+            }
+
+            var accountVM = new AccountVM
+            {
+                FirstName = customer.CustFirstName,
+                LastName = customer.CustLastName,
+                BusinessPhone = customer.CustBusPhone,
+                HomePhone = customer.CustHomePhone,
+                Address = customer.CustAddress,
+                City = customer.CustCity,
+                Province = customer.CustProv,
+                PostalCode = customer.CustPostal,
+                Country = customer.CustCountry,
+            };
+
+            return View(accountVM);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Details(AccountVM model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var customerIdClaim = User.FindFirst("CustomerId");
+            if (customerIdClaim == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var customerId = int.Parse(customerIdClaim.Value);
+            var customer = await _unitOfWork.Users.GetCustomerByID(customerId);
+
+            if (customer == null)
+            {
+                return NotFound("Customer not found.");
+            }
+
+            customer.CustFirstName = model.FirstName;
+            customer.CustLastName = model.LastName;
+            customer.CustBusPhone = model.BusinessPhone;
+            customer.CustHomePhone = model.HomePhone;
+            customer.CustAddress = model.Address;
+            customer.CustCity = model.City;
+            customer.CustProv = model.Province;
+            customer.CustPostal = model.PostalCode;
+            customer.CustCountry = model.Country;
+
+            _unitOfWork.Customers.Update(customer);
+            await _unitOfWork.Save();
+
+            return RedirectToAction("Index");
+        }
+
+ 
+        public async Task<IActionResult> History()
+        {
+            Claim customerIdClaim = User.FindFirst("CustomerId");
+            if (customerIdClaim == null)
+            {
+                // Handle the case where the customer ID claim is not found
+                return RedirectToAction("Login", "Account");
+            }
+
+            var customerId = int.Parse(customerIdClaim.Value);
+
+            var accountHistoryVM = new AccountHistoryVM
+            {
+                Customers = _unitOfWork.Customers.GetAccount(customerId),
+                Bookings = await _unitOfWork.Bookings.GetOrderHistory(customerId)
+            };
+            ViewBag.TotalPrice = new decimal();
+            foreach (var account in accountHistoryVM.Bookings)
+            {
+                ViewBag.TotalPrice += _unitOfWork.Packages.GetPackagePrice((int)account.PackageId);
+            }
+
+            ViewBag.Package1Price = _unitOfWork.Packages.GetPackagePrice(1);
+            ViewBag.Package2Price = _unitOfWork.Packages.GetPackagePrice(2);
+            ViewBag.Package3Price = _unitOfWork.Packages.GetPackagePrice(3);
+            ViewBag.Package4Price = _unitOfWork.Packages.GetPackagePrice(4);
+
+            return View(accountHistoryVM);
+        }
+
+        public async Task<IActionResult> EditAccount()
+        {
+            var customerIdClaim = User.FindFirst("CustomerId");
+            if (customerIdClaim == null)
+            {
+                return RedirectToAction("Login", "Auth");
+            }
+
+            var userIdClaim = User.FindFirst("UserId");
+            if (userIdClaim == null)
+            {
+                return RedirectToAction("Login", "Auth");
+            }
+
+            var customerId = int.Parse(customerIdClaim.Value);
+            var userId = int.Parse(userIdClaim.Value);
+            var customer = await _unitOfWork.Customers.GetByIdAsync(customerId);
+            var user = await _unitOfWork.Users.GetByIdAsync(userId);
+
+            if (customer == null || user == null)
+            {
+                return NotFound("Customer or User not found.");
+            }
+
+            var model = new CredentialsVM
+            {
+                Email = customer.CustEmail
+            };
+
             return View(model);
         }
 
-        /// <summary>
-        /// Handles the logout POST request.
-        /// </summary>
-        /// <returns>A task that represents the asynchronous operation. The task result contains the IActionResult.</returns>
         [HttpPost]
-        public async Task<IActionResult> Logout()
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditAccount(CredentialsVM model)
         {
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return RedirectToAction("Login", "Account");
-        }
-
-        /// <summary>
-        /// Retrieves a dictionary of Canadian provinces.
-        /// </summary>
-        /// <returns>A dictionary where the key is the province abbreviation and the value is the full province name.</returns>
-        private Dictionary<string, string> GetProvinces()
-        {
-            return new Dictionary<string, string>
+            if (!ModelState.IsValid)
             {
-                { "AB", "Alberta" },
-                { "BC", "British Columbia" },
-                { "MB", "Manitoba" },
-                { "NB", "New Brunswick" },
-                { "NL", "Newfoundland and Labrador" },
-                { "NS", "Nova Scotia" },
-                { "ON", "Ontario" },
-                { "PE", "Prince Edward Island" },
-                { "QC", "Quebec" },
-                { "SK", "Saskatchewan" },
-                { "NT", "Northwest Territories" },
-                { "NU", "Nunavut" },
-                { "YT", "Yukon" }
-            };
+                return View(model);
+            }
+
+            var customerIdClaim = User.FindFirst("CustomerId");
+            if (customerIdClaim == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var userIdClaim = User.FindFirst("UserId");
+            if (userIdClaim == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var customerId = int.Parse(customerIdClaim.Value);
+            var userId = int.Parse(userIdClaim.Value);
+            var customer = await _unitOfWork.Customers.GetByIdAsync(customerId);
+            var user = await _unitOfWork.Users.GetByIdAsync(userId);
+
+            if (customer == null || user == null)
+            {
+                return NotFound("Customer or User not found.");
+            }
+
+            // Update email
+            customer.CustEmail = model.Email;
+            _unitOfWork.Customers.Update(customer);
+
+            user.Password = model.Password;
+            _unitOfWork.Users.Update(user);
+
+            await _unitOfWork.Save();
+
+            return RedirectToAction("Index");
         }
     }
 }

@@ -1,31 +1,50 @@
-﻿namespace TravelExperts.Utils
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using TravelExperts.DataAccess.Models;
+
+namespace TravelExperts.Utils
 {
     /// <summary>
     /// Defines static values for the application
     /// </summary>
     public static class StaticDefinition
     {
+
         public const string Customer = "Customer";
         public const string Admin = "Admin";
 
-        public static readonly List<ProvinceVM> ProvinceList = new List<ProvinceVM>
+        public static IEnumerable<TripType> GetTripTypes()
         {
-             new ProvinceVM { DisplayName = "Alberta", Value = "AB" },
-        new ProvinceVM { DisplayName = "British Columbia", Value = "BC" },
-        new ProvinceVM { DisplayName = "Manitoba", Value = "MB" },
-        new ProvinceVM { DisplayName = "New Brunswick", Value = "NB" },
-        new ProvinceVM { DisplayName = "Newfoundland and Labrador", Value = "NL" },
-        new ProvinceVM { DisplayName = "Nova Scotia", Value = "NS" },
-        new ProvinceVM { DisplayName = "Northwest Territories", Value = "NT" },
-        new ProvinceVM { DisplayName = "Nunavut", Value = "NU" },
-        new ProvinceVM { DisplayName = "Ontario", Value = "ON" },
-        new ProvinceVM { DisplayName = "Prince Edward Island", Value = "PE" },
-        new ProvinceVM { DisplayName = "Quebec", Value = "QC" },
-        new ProvinceVM { DisplayName = "Saskatchewan", Value = "SK" },
-        new ProvinceVM { DisplayName = "Yukon", Value = "YT" }
+            return new List<TripType>
+            {
+                new TripType { ID = "B", TripTypeName = "Business" },
+                new TripType { ID = "L", TripTypeName = "Leisure" },
+                new TripType { ID = "G", TripTypeName = "Group" }
+            };
+        }
 
-        };
-
+        public static Dictionary<string, string> GetProvinces()
+        {
+            return new Dictionary<string, string>
+            {
+                { "AB", "Alberta" },
+                { "BC", "British Columbia" },
+                { "MB", "Manitoba" },
+                { "NB", "New Brunswick" },
+                { "NL", "Newfoundland and Labrador" },
+                { "NS", "Nova Scotia" },
+                { "ON", "Ontario" },
+                { "PE", "Prince Edward Island" },
+                { "QC", "Quebec" },
+                { "SK", "Saskatchewan" },
+                { "NT", "Northwest Territories" },
+                { "NU", "Nunavut" },
+                { "YT", "Yukon" }
+            };
+        }
     }
 
 

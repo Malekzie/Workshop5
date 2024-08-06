@@ -19,8 +19,8 @@
 	### DataAccess Project
 		The **DataAccess** project is where all the database operations are handled.
 		It contains the TravelExpertsContext class, which is the main class that
-		communicates with the database. It also contains the repositories for each
-		table in the database. The repositories are used to perform CRUD operations
+		communicates with the database. It also contains the services for each
+		table in the database. The services are used to perform CRUD operations
 		on the database.
 
 		In this project, I've implemented the strategy called Unit of Work.
@@ -35,7 +35,7 @@
 		represents a table in the database. The models are used to pass data between
 		the DataAccess project and the Web Application.
 
-		There is also the ViewModel folder, which contains the view models for the project.
+		There is also the **ViewModel** folder, which contains the view models for the project.
 		If you're unfamiliar with view models, they are used to pass data between the
 		controller and the view. They are useful when you need to pass data that is not
 		directly related to the model or when you want to customize the data that is
@@ -44,22 +44,25 @@
 	### Web Application
 		The **Web Application** is the main project of the solution. It contains all
 		the controllers, views, and other files that make up the web application.
-		With the implementation of Identity, I've placed things related to Customer inside
-		the Customer folder under Areas.
+		
+
+		In registration, I've implemented Input Masking for the phone number field.
+		When the user enters their phone number, it will automatically format the
+		phone number as they type. This is useful when you want to ensure that the
+		phone number is entered in a specific format.
+		I've also implemented that to the postal code field in the Personal Details 
+		section.
 
 
 	### Utils Project
 
+		Currently, It has the password hashing algorithm. It is used to hash the password
+		before storing it in the database. This is useful when you want to ensure that
+		the password is stored securely in the database.
 
-		It also contains Static Definitions for the project. This is where I've placed
-		constants that are used throughout the project. If you need to add a new constant,
-		you can add it to the StaticDefinitions class in the Utils project.
-		It currently has the constants for the roles, and the constants for
-		the provinces drop down in the register page.
-
-		If you are to add new constants:
-		Please add them to the StaticDefinitions class
-		in the Utils project.
+		It also has StaticDefinitions class for constants. Here, I've defined the
+		constants that are used throughout the project. This is useful when you want
+		to define constants that are used in multiple places in the project.
 
 ## Features
 
@@ -72,12 +75,13 @@
 
 ## My Contributions
 	### Web Application
-		- Configured Program.cs for database Dependency Injection,
+		- Configured Program.cs for database Dependency Injection
+		- Took care of authentication and home page
 
 	### DataAccess
 		- Implemented the Unit of Work pattern,
-		- Implemented the repositories for each table in the database,
-		- Set up the project to use Entity Framework Core
+		- Implemented the services for each table in the database,
+		- Set up the project to use Entity Framework Core and Cookie authentication
 
 	### Models
 		- Cascaded the required models from the database

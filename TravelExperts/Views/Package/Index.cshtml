@@ -1,0 +1,49 @@
+﻿@model IEnumerable<TravelExperts.Models.ViewModel.CardVM>
+
+@{
+    ViewData["Title"] = "Package Page";
+}
+
+<main class="glass">
+    <div class="container">
+        <div class="row">
+            <div class="col align-self-center">
+                <h1>Travel Experts Packages</h1>
+                <p>
+                    See available packages below or select one from the slideshow!
+                </p>
+            </div>
+            <div class="col align-self-end text-center">
+                <partial name="_PackageCarouselPartial" />
+            </div>
+        </div>
+
+
+    </div>
+
+    <div class="container">
+
+        <div class="row">
+            <div class="col">
+                <h2>Current Packages</h2>
+                <p class="my-2 text-black-50">
+                    Travel Experts offers a wide range of travel packages for our customers to enjoy.
+                    Select one of the packages below to learn more about the details and pricing.
+                </p>
+            </div>
+            <div class="col">
+
+                <div class="d-flex gap-3 justify-content-center">
+                    @foreach (var card in Model)
+                    {
+                        @Html.Partial("_PackageCardPartial", card)
+                        
+                    }
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+</main>

@@ -1,7 +1,11 @@
-﻿namespace TravelExperts.DataAccess.Service.IService
+﻿using System.Linq.Expressions;
+
+namespace TravelExperts.DataAccess.Service.IService
 {
     public interface IPackageService : IService<Package>
     {
-        // Add more methods here
+        List<Package> GetById(int id);
+        Task<Package> GetFirstOrDefaultAsync(Expression<Func<Package, bool>> filter);
+        decimal? GetPackagePrice(int id);
     }
 }

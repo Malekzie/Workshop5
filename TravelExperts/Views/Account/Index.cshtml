@@ -1,5 +1,138 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model AccountVM
+
 @{
+    ViewData["Title"] = "Profile";
+    Layout = "~/Views/Account/_Layout.cshtml";
+    var provinces = TravelExperts.Utils.StaticDefinition.GetProvinces();
+    var selectedProvince = Model.Province;
+}
+
+<div class="container">
+    <form class="row" asp-action="Details" method="post" id="accountForm">
+        @Html.AntiForgeryToken()
+        <h3 class="border-bottom pb-3 mb-4 text-secondary">Account Details</h3>
+
+        <!-- Personal Details Section -->
+        <div class="col-md-6">
+            <div class="form-floating mb-3">
+                <input asp-for="FirstName" class="form-control" placeholder="First Name" value="@Model.FirstName" disabled />
+                <label asp-for="FirstName">First Name</label>
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating mb-3">
+                <input asp-for="LastName" class="form-control" placeholder="Last Name" value="@Model.LastName" disabled />
+                <label asp-for="LastName">Last Name</label>
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating mb-3">
+                <input asp-for="BusinessPhone" class="form-control phone-input" placeholder="Business Phone" value="@Model.BusinessPhone" disabled id="Input_CustBusPhone" />
+                <label asp-for="BusinessPhone">Business Phone</label>
+                <span asp-validation-for="BusinessPhone" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating mb-3">
+                <input asp-for="HomePhone" class="form-control phone-input" placeholder="Home Phone" value="@Model.HomePhone" id="Input_CustHomePhone" disabled />
+                <label asp-for="HomePhone">Home Phone</label>
+                <span asp-validation-for="HomePhone" class="text-danger"></span>
+            </div>
+        </div>
+
+        <!-- Address Section -->
+        <div class="col-md-12">
+            <h3>Address</h3>
+        </div>
+
+        <div class="col-md-12">
+            <div class="form-floating mb-3">
+                <input asp-for="Address" class="form-control" placeholder="Address" value="@Model.Address" disabled />
+                <label asp-for="Address">Address</label>
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating mb-3">
+                <input asp-for="City" class="form-control" placeholder="City" value="@Model.City" disabled />
+                <label asp-for="City">City</label>
+                <span asp-validation-for="City" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating mb-3">
+                <input asp-for="Province" class="form-control" placeholder="Province" value="@Model.Province" disabled id="provinceInput" />
+                <select asp-for="Province" class="form-control d-none" id="provinceSelect">
+                    <option value="">Select Province</option>
+                    @foreach (var province in provinces)
+                    {
+                        <option value="@province.Key">@province.Value</option>
+                    }
+                </select>
+                <label asp-for="Province">Province</label>
+                <span asp-validation-for="Province" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating mb-3">
+                <input asp-for="PostalCode" class="form-control postal-code-input" placeholder="Postal Code" value="@Model.PostalCode" disabled id="Input_CustPostal" />
+                <label asp-for="PostalCode">Postal Code</label>
+                <span asp-validation-for="PostalCode" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating mb-3">
+                <input asp-for="Country" class="form-control" placeholder="Country" value="@Model.Country" disabled />
+                <label asp-for="Country">Country</label>
+                <span asp-validation-for="Country" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <button type="button" class="w-100 btn btn-lg btn-warning" id="updateButton" onclick="enableEdit()">Update</button>
+            <div id="editButtons" class="d-none mt-3 row">
+                <div class="col-md-6">
+                    <button type="submit" class="w-100 btn btn-lg btn-success">Save</button>
+                </div>
+                <div class="col-md-6">
+                    <button type="button" class="w-100 btn btn-lg btn-secondary" onclick="cancelEdit()">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.7/jquery.inputmask.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#Input_CustHomePhone').inputmask("(999) 999-9999");
+            $('#Input_CustBusPhone').inputmask("(999) 999-9999");
+            $('#Input_CustPostal').inputmask("A9A 9A9", { casing: "upper" });
+        });
+
+        function enableEdit() {
+            const inputs = document.querySelectorAll('#accountForm input');
+            inputs.forEach(input => input.disabled = false);
+            document.getElementById('updateButton').classList.add('d-none');
+            document.getElementById('editButtons').classList.remove('d-none');
+
+            document.getElementById('provinceInput').classList.add('d-none');
+            document.getElementById('provinceSelect').classList.remove('d-none');
+        }
+
+        function cancelEdit() {
+            const inputs = document.querySelectorAll('#accountForm input');
+            inputs.forEach(input => input.disabled = true);
+            document.getElementById('updateButton').classList.remove('d-none');
+            document.getElementById('editButtons').classList.add('d-none');
+
+            document.getElementById('provinceInput').classList.remove('d-none');
+            document.getElementById('provinceSelect').classList.add('d-none');
+        }
+    </script>
 }

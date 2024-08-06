@@ -1,0 +1,94 @@
+﻿@using TravelExperts.Models.ViewModel
+@model AccountHistoryVM
+@{
+
+    Layout = "~/Views/Account/_Layout.cshtml";
+    ViewData["Title"] = "Order History";
+}
+
+<main>
+    <div class="container">
+       
+        <div class="row">
+            <div class="col">
+                <h2>@Model.Customers.CustFirstName.ToString()'s Order History</h2>
+                <p class="my-2">
+                    View your past and future vacations here. 
+                </p>
+                <table class="table-bordered text-center" style="width:90%;margin: 0 auto;">
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Bookings.First().BookingNo)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Bookings.First().BookingDate)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Bookings.First().TravelerCount)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Bookings.First().TripTypeId)
+                        </th>
+                        <td>
+                            @Html.DisplayNameFor(model => model.Bookings.First().PackageId)
+                        </td>
+                        <th>
+                            Price
+                        </th>
+                    </tr>
+                    @foreach (var item in Model.Bookings)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(AccountHistoryVM => item.BookingNo)
+                            </td>
+                            <td>
+                                @Html.Raw(item.BookingDate?.ToShortDateString())
+                            </td>
+                            <td>
+                                @Html.DisplayFor(AccountHistoryVM => item.TravelerCount)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(AccountHistoryVM => item.TripTypeId)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(AccountHistoryVM => item.PackageId)
+                            </td>
+                                @switch(item.PackageId){
+                                    case 1:
+                                    <td>
+                                        @ViewBag.Package1Price.ToString("c")
+                                    </td>
+                                        break;
+                                    case 2:
+                                    <td>
+                                        @ViewBag.Package2Price.ToString("c")
+                                    </td>
+                                    break;
+                                    case 3:
+                                    <td>
+                                        @ViewBag.Package3Price.ToString("c")
+                                    </td>
+                                    break;
+                                    case 4:
+                                    <td>
+                                        @ViewBag.Package4Price.ToString("c")
+                                    </td>
+                                    break;
+                                    default: break;
+                                }
+                        </tr>
+                    }
+                </table>
+                <div class="d-flex justify-content-end mt-3">
+                    <h3>
+                        Total Price: @ViewBag.TotalPrice.ToString("c")
+                    </h3>
+                </div>
+            </div>
+            <div>
+                <a asp-controller="Package" asp-action="Index" class="btn btn-warning">Back to Packages</a>
+            </div>
+        </div>
+    </div>
+</main>

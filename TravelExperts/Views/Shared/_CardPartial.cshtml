@@ -1,9 +1,22 @@
 ﻿@model CardVM
 
-<div class="card" style="width: 18rem;">
-    <img src="@Model.ImageUrl" class="card-img-top" alt="@Model.Name">
-    <div class="card-body">
-        <h5 class="card-title">@Model.Name</h5>
-        <p class="card-text">@Model.Desc</p>
+<link rel="stylesheet" href="~/css/site.css" />
+
+
+<div class="col-12 col-sm-6 col-xl-3">
+    <div class="card border-0 shadow-sm h-100">
+        <div class="card-body text-center p-4 p-xxl-5">
+            @if (Model.ImageUrl.EndsWith(".svg"))
+            {
+                @SvgHelper.InlineSvg(Model.ImageUrl)
+            }
+            else
+            {
+                <img src="@Model.ImageUrl" alt="@Model.Name" class="img-fluid mb-4" style="width:50px;height:50px;" />
+            }
+            <h4 class="mb-4">@Model.Name</h4>
+            <p class="mb-4 text-secondary">@Model.Desc</p>
+        </div>
     </div>
 </div>
+

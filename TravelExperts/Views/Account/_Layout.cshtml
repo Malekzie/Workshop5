@@ -1,0 +1,61 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"] - My ASP.NET Application</title>
+    <link href="https://cdn.lineicons.com/4.0/lineicons.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
+</head>
+<body>
+    <div class="wrapper">
+        <aside id="sidebar">
+            <div class="d-flex">
+                <button class="toggle-btn" type="button">
+                    <i class="lni lni-grid-alt" style="color:black;"></i>
+                </button>
+                <div class="sidebar-logo">
+                    <a asp-controller="Home" asp-action="Index">Travel Experts</a>
+                </div>
+            </div>
+            <ul class="sidebar-nav">
+                <li class="sidebar-item">
+                    <a asp-action="Index" class="sidebar-link">
+                        <i class="lni lni-user"></i>
+                        <span>Account</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a asp-action="History" class="sidebar-link">
+                        <i class="lni lni-agenda"></i>
+                        <span>Order History</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a asp-action="EditAccount" class="sidebar-link">
+                        <i class="lni lni-cog"></i>
+                        <span>Setting</span>
+                    </a>
+                </li>
+            </ul>
+            <div class="sidebar-footer">
+                <form asp-controller="Auth" asp-action="Logout" method="post" class="d-inline">
+                    <button type="submit" class="btn sidebar-link">
+                        <i class="lni lni-exit"></i>
+                        <span>Logout</span>
+                    </button>
+                </form>
+            </div>
+        </aside>
+        <div class="container">
+            <main role="main" class="col-md-9 ml-sm-auto mt-5 col-lg-10 px-4">
+                @RenderBody()
+            </main>
+        </div>
+    </div>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>
