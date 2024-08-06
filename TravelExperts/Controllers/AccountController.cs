@@ -183,10 +183,16 @@ namespace TravelExperts.Controllers
                 Customers = _unitOfWork.Customers.GetAccount(customerId),
                 Bookings = await _unitOfWork.Bookings.GetOrderHistory(customerId)
             };
+            ViewBag.TotalPrice = new decimal();
             foreach (var account in accountHistoryVM.Bookings)
             {
                 ViewBag.TotalPrice += _unitOfWork.Packages.GetPackagePrice((int)account.PackageId);
             }
+
+            ViewBag.Package1Price = _unitOfWork.Packages.GetPackagePrice(1);
+            ViewBag.Package2Price = _unitOfWork.Packages.GetPackagePrice(2);
+            ViewBag.Package3Price = _unitOfWork.Packages.GetPackagePrice(3);
+            ViewBag.Package4Price = _unitOfWork.Packages.GetPackagePrice(4);
 
             return View(accountHistoryVM);
         }

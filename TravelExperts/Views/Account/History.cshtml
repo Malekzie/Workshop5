@@ -36,6 +36,9 @@
                         <th>
                             @Html.DisplayNameFor(model => model.Bookings.First().TripTypeId)
                         </th>
+                        <td>
+                            @Html.DisplayNameFor(model => model.Bookings.First().PackageId)
+                        </td>
                         <th>
                             Price
                         </th>
@@ -58,10 +61,35 @@
                             <td>
                                 @Html.DisplayFor(AccountHistoryVM => item.PackageId)
                             </td>
+                                @switch(item.PackageId){
+                                    case 1:
+                                    <td>
+                                        @ViewBag.Package1Price.ToString("c")
+                                    </td>
+                                        break;
+                                    case 2:
+                                    <td>
+                                        @ViewBag.Package2Price.ToString("c")
+                                    </td>
+                                    break;
+                                    case 3:
+                                    <td>
+                                        @ViewBag.Package3Price.ToString("c")
+                                    </td>
+                                    break;
+                                    case 4:
+                                    <td>
+                                        @ViewBag.Package4Price.ToString("c")
+                                    </td>
+                                    break;
+                                    default: break;
+                                }
                         </tr>
                     }
                 </table>
-                
+                <h3>
+                Total Price: @ViewBag.TotalPrice.ToString("c")
+                </h3>
             </div>
         </div>
     </div>
