@@ -6,6 +6,8 @@
 
 @if (Model.TripTypes != null)
 {
+<main class="glass">
+
     <h1>Purchase package</h1>
     <hr />
     <div class="row">
@@ -16,27 +18,30 @@
                 <input type="hidden" asp-for="Booking.PackageId" value="@Model.PackageId" />
                 <input type="hidden" asp-for="PackageId" value="@Model.PackageId" />
 
-                <div class="form-group">
-                    <label asp-for="Booking.TravelerCount" class="control-label">Please enter your traveler count</label>
-                    <input asp-for="Booking.TravelerCount" class="form-control" />
-                    <span asp-validation-for="Booking.TravelerCount" class="text-danger"></span>
+                <div class="form-floating mb-3 border border-black">
+                    <input asp-for="Booking.TripTypeId" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                    <label asp-for="Booking.TripTypeId" class="ms-2 text-muted">Please enter your traveler count</label>
+                    <span asp-validation-for="Booking.TripTypeId" class="text-danger"></span>
                 </div>
+
+                
                 <br />
                 <div class="form-group">
                     <label asp-for="Booking.TripTypeId" class="control-label">Please select your trip type</label>
                     <select asp-for="Booking.TripTypeId" class="form-control" asp-items="@(new SelectList(Model.TripTypes, "ID", "TripTypeName"))">
-                        <option value="">Select Trip Type</option>
+                        <option value="">--Select Trip Type--</option>
                     </select>
                     <span asp-validation-for="Booking.TripTypeId" class="text-danger"></span>
                 </div>
                 <br />
                 <div class="form-group">
                     <input type="submit" value="Buy Package" class="btn btn-primary" />
-                    <a asp-action="Index" class="btn btn-outline-secondary">Back to packages</a>
+                    <a asp-action="Index" class="btn btn-warning">Back to packages</a>
                 </div>
             </form>
         </div>
     </div>
+</main>
 }
 else
 {
