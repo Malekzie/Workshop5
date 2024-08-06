@@ -36,6 +36,7 @@ namespace TravelExperts.Controllers
             {
                 cards.Add(new CardVM
                 {
+                    Id = p.PackageId,
                     Name = p.PkgName,
                     ImageUrl = imageMap.ContainsKey(p.PkgName) ? imageMap[p.PkgName] : "img/default.jpg",
                     Desc = p.PkgDesc

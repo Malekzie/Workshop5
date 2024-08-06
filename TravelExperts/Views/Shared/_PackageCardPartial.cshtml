@@ -4,7 +4,7 @@
 <div class="card" style="width: 18rem;">
     <img src="@Model.ImageUrl" class="card-img-top" alt="@Model.Name">
     <div class="card-body">
-        <a asp-action="BuyPackage" asp-route-packageId="1">
+        <a asp-action="BuyPackage" asp-route-packageId="@Model.Id">
             <h5 class="card-title">@Model.Name</h5>
         </a>
         <p class="card-text">@Model.Desc</p>
