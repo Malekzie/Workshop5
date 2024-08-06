@@ -11,7 +11,6 @@ a {
     text-decoration: none;
 }
 
-
 html, body {
     height: 100%;
     margin: 0;
@@ -48,7 +47,7 @@ body {
     min-width: 70px;
     z-index: 1000;
     transition: all .25s ease-in-out;
-    background-color: #0e2238;
+    background-color: #f0ad4e;
     display: flex;
     flex-direction: column;
 }
@@ -75,13 +74,14 @@ body {
 }
 
     .sidebar-logo a {
-        color: #FFF;
+        color: #000; /* Contrast color */
         font-size: 1.15rem;
         font-weight: 600;
     }
 
 #sidebar:not(.expand) .sidebar-logo,
-#sidebar:not(.expand) a.sidebar-link span {
+#sidebar:not(.expand) a.sidebar-link span,
+#sidebar:not(.expand) .sidebar-footer span {
     display: none;
 }
 
@@ -92,7 +92,7 @@ body {
 
 a.sidebar-link {
     padding: .625rem 1.625rem;
-    color: #FFF;
+    color: #000; /* Contrast color */
     display: block;
     font-size: 0.9rem;
     white-space: nowrap;

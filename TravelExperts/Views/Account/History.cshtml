@@ -1,15 +1,8 @@
 ﻿@using TravelExperts.Models.ViewModel
 @model AccountHistoryVM
 @{
-    if (ViewData.TryGetValue("ParentLayout", out var parentLayout) && parentLayout != null)
-    {
-        Layout = parentLayout.ToString();
-    }
-    else
-    {
-        Layout = "~/Views/Account/_Layout.cshtml";
 
-    }
+    Layout = "~/Views/Account/_Layout.cshtml";
     ViewData["Title"] = "Order History";
 }
 
@@ -22,7 +15,7 @@
                 <p class="my-2">
                     View your past and future vacations here. 
                 </p>
-                <table class="table-bordered text-center" style="width:90%">
+                <table class="table-bordered text-center" style="width:90%;margin: 0 auto;">
                     <tr>
                         <th>
                             @Html.DisplayNameFor(model => model.Bookings.First().BookingNo)
@@ -87,9 +80,11 @@
                         </tr>
                     }
                 </table>
-                <h3>
-                Total Price: @ViewBag.TotalPrice.ToString("c")
-                </h3>
+                <div class="d-flex justify-content-end mt-3">
+                    <h3>
+                        Total Price: @ViewBag.TotalPrice.ToString("c")
+                    </h3>
+                </div>
             </div>
         </div>
     </div>

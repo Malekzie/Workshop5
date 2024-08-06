@@ -12,7 +12,7 @@
         <aside id="sidebar">
             <div class="d-flex">
                 <button class="toggle-btn" type="button">
-                    <i class="lni lni-grid-alt"></i>
+                    <i class="lni lni-grid-alt" style="color:black;"></i>
                 </button>
                 <div class="sidebar-logo">
                     <a asp-controller="Home" asp-action="Index">Travel Experts</a>
@@ -33,12 +33,6 @@
                 </li>
                 <li class="sidebar-item">
                     <a href="#" class="sidebar-link">
-                        <i class="lni lni-popup"></i>
-                        <span>Notification</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a href="#" class="sidebar-link">
                         <i class="lni lni-cog"></i>
                         <span>Setting</span>
                     </a>
@@ -46,7 +40,7 @@
             </ul>
             <div class="sidebar-footer">
                 <form asp-action="Logout" method="post" class="d-inline">
-                    <button type="submit" class="btn btn-link sidebar-link">
+                    <button type="submit" class="btn sidebar-link">
                         <i class="lni lni-exit"></i>
                         <span>Logout</span>
                     </button>
