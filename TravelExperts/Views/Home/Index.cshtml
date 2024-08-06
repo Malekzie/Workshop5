@@ -5,14 +5,6 @@
     ViewData["Title"] = "Home Page";
 }
 <style>
-    .glass{
-        background: rgba(0,0,0,0);
-        -webkit-backdrop-filter: blur(10px);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(0,0,0,0);
-        padding: 2rem;
-        border-radius: 2rem;
-    }
 
     .card {
         border-radius: 15px;
@@ -27,12 +19,12 @@
 </style>
 
 
-<main>
+<main class="glass">
     <div class="container">
         <div class="row">
             <div class="col align-self-center">
                 <h1>Welcome to Travel Experts</h1>
-                <p class="glass">Travel Experts is a travel agency that provides a variety of travel services to customers. 
+                <p>Travel Experts is a travel agency that provides a variety of travel services to customers. 
                     We offer a wide range of vacation packages, cruises, flights, hotels, and car rentals. 
                     Our goal is to provide our customers with the best travel experience possible. 
                     Whether you are planning a family vacation, a romantic getaway, or a business trip, 
@@ -40,7 +32,7 @@
                 </p>
                 <div class="mt-2">
                     <a asp-controller="Package" asp-action="Index" class="btn btn-warning" >View Packages</a>
-                    <a class="btn btn-primary">Contact Us</a>
+                    <a asp-action="Contact" class="btn btn-primary">Contact Us</a>
                 </div>
             </div>
             <div class="col align-self-end text-center">
@@ -56,7 +48,7 @@
         <div class="row">
             <div class="container">
                 <div class="row justify-content-md-center">
-                    <div class="col-12 col-md-10 col-lg-8 col-xl-7 glass">
+                    <div class="col-12 col-md-10 col-lg-8 col-xl-7">
                         <h4 class="fs-6 mb-2 text-primary text-center text-uppercase">What We Do?</h4>
                         <h2 class="display-5 mb-5 text-center">We are giving you perfect solutions with our proficient services.</h2>
                         <hr class="w-50 mx-auto mb-2 mb-xl-3 border-dark-subtle">
