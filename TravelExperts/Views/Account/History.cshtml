@@ -1,6 +1,15 @@
 ﻿@using TravelExperts.Models.ViewModel
 @model AccountHistoryVM
 @{
+    if (ViewData.TryGetValue("ParentLayout", out var parentLayout) && parentLayout != null)
+    {
+        Layout = parentLayout.ToString();
+    }
+    else
+    {
+        Layout = "~/Views/Account/_Layout.cshtml";
+
+    }
     ViewData["Title"] = "Order History";
 }
 
