@@ -32,7 +32,37 @@ namespace TravelExperts.Controllers
         /// <summary>
         /// Displays the index page.
         /// </summary>
-        public IActionResult Index() => View();
+        public async Task<IActionResult> Index()
+        {
+            var customerIdClaim = User.FindFirst("CustomerId");
+            if (customerIdClaim == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var customerId = int.Parse(customerIdClaim.Value);
+            var customer = await _unitOfWork.Users.GetCustomerByID(customerId);
+
+            if (customer == null)
+            {
+                return NotFound("Customer not found.");
+            }
+
+            var accountVM = new AccountVM
+            {
+                FirstName = customer.CustFirstName,
+                LastName = customer.CustLastName,
+                BusinessPhone = customer.CustBusPhone,
+                HomePhone = customer.CustHomePhone,
+                Address = customer.CustAddress,
+                City = customer.CustCity,
+                Province = customer.CustProv,
+                PostalCode = customer.CustPostal,
+                Country = customer.CustCountry,
+            };
+
+            return View(accountVM);
+        }
 
         /// <summary>
         /// Displays the login page.
@@ -68,16 +98,9 @@ namespace TravelExperts.Controllers
                 };
 
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                var authProperties = new AuthenticationProperties { IsPersistent = true };
 
-                var authProperties = new AuthenticationProperties
-                {
-                    IsPersistent = true,
-                };
-
-                await HttpContext.SignInAsync(
-                    CookieAuthenticationDefaults.AuthenticationScheme,
-                    new ClaimsPrincipal(claimsIdentity),
-                    authProperties);
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
 
                 // Set customer ID in a cookie
                 HttpContext.Response.Cookies.Append("CustomerId", customer.CustomerId.ToString(), new CookieOptions

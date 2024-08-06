@@ -22,13 +22,13 @@
                 <li class="sidebar-item">
                     <a asp-action="Index" class="sidebar-link">
                         <i class="lni lni-user"></i>
-                        <span>Profile</span>
+                        <span>Account</span>
                     </a>
                 </li>
                 <li class="sidebar-item">
                     <a asp-action="History" class="sidebar-link">
                         <i class="lni lni-agenda"></i>
-                        <span>History</span>
+                        <span>Order History</span>
                     </a>
                 </li>
                 <li class="sidebar-item">
@@ -47,9 +47,11 @@
                 </form>
             </div>
         </aside>
-        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-            @RenderBody()
-        </main>
+        <div class="container">
+            <main role="main" class="col-md-9 ml-sm-auto mt-5 col-lg-10 px-4">
+                @RenderBody()
+            </main>
+        </div>
     </div>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

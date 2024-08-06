@@ -1,6 +1,87 @@
-﻿@{
+﻿@model AccountVM
+
+@{
     Layout = "~/Views/Account/_Layout.cshtml";
 }
 
-<h2>Account Details</h2>
-<p>This is the account details page.</p>
+<div class="container">
+    <form class="row" asp-action="Details" method="post">
+        <h3 class="border-bottom pb-3 mb-4 text-secondary">Account Details</h3>
+
+        <!-- Personal Details Section -->
+        <div class="col-md-6">
+            <div class="form-floating mb-3">
+                <input asp-for="FirstName" class="form-control" placeholder="First Name" value="@Model.FirstName" />
+                <label asp-for="FirstName">First Name</label>
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating mb-3">
+                <input asp-for="LastName" class="form-control" placeholder="Last Name" value="@Model.LastName" />
+                <label asp-for="LastName">Last Name</label>
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating mb-3">
+                <input asp-for="BusinessPhone" class="form-control" placeholder="Business Phone" value="@Model.BusinessPhone" />
+                <label asp-for="BusinessPhone">Business Phone</label>
+                <span asp-validation-for="BusinessPhone" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating mb-3">
+                <input asp-for="HomePhone" class="form-control" placeholder="Home Phone" value="@Model.HomePhone" />
+                <label asp-for="HomePhone">Home Phone</label>
+                <span asp-validation-for="HomePhone" class="text-danger"></span>
+            </div>
+        </div>
+
+        <!-- Address Section -->
+        <div class="col-md-12">
+            <h3>Address</h3>
+        </div>
+
+        <div class="col-md-12">
+            <div class="form-floating mb-3">
+                <input asp-for="Address" class="form-control" placeholder="Address" value="@Model.Address" />
+                <label asp-for="Address">Address</label>
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating mb-3">
+                <input asp-for="City" class="form-control" placeholder="City" value="@Model.City" />
+                <label asp-for="City">City</label>
+                <span asp-validation-for="City" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating mb-3">
+                <input asp-for="Province" class="form-control" placeholder="Province" value="@Model.Province" />
+                <label asp-for="Province">Province</label>
+                <span asp-validation-for="Province" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating mb-3">
+                <input asp-for="PostalCode" class="form-control" placeholder="Postal Code" value="@Model.PostalCode" />
+                <label asp-for="PostalCode">Postal Code</label>
+                <span asp-validation-for="PostalCode" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-floating mb-3">
+                <input asp-for="Country" class="form-control" placeholder="Country" value="@Model.Country" />
+                <label asp-for="Country">Country</label>
+                <span asp-validation-for="Country" class="text-danger"></span>
+            </div>
+        </div>
+
+
+        <div class="col-12">
+            <button type="submit" class="w-100 btn btn-lg btn-warning">Update</button>
+        </div>
+    </form>
+</div>
