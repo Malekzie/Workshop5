@@ -1,11 +1,4 @@
-﻿@model RegisterVM
-
-@{
-    ViewData["Title"] = "Register";
-    Layout= "~/Views/Shared/_Layout.cshtml";
-}
-
-<div class="card shadow border-0 mt-4">
+﻿<div class="card shadow border-0 mt-4">
     <div class="card-header bg-dark bg-gradient ml-0 py-4">
         <div class="row">
             <div class="col-12 text-center">
@@ -32,15 +25,15 @@
 
                     <!-- Email -->
                     <div class="form-floating mb-3 col-md-6">
-                        <input asp-for="Input.Email" class="form-control" autocomplete="" aria-required="true" placeholder="name@example.com" />
+                        <input asp-for="Input.Email" class="form-control" autocomplete="" placeholder="name@example.com" />
                         <label asp-for="Input.Email" class="ms-2 text-muted">Email</label>
                         <span asp-validation-for="Input.Email" class="text-danger"></span>
-                    </div>  
-                    
+                    </div>
+
                     <!-- Username -->
                     <div class="form-floating mb-3 col-md-6">
-                        <input asp-for="Input.Username" class="form-control" autocomplete="" aria-required="true" placeholder="name@example.com" />
-                        <label asp-for="Input.Username" class="ms-2 text-muted">Username <span class="text-danger">*</span></label>
+                        <input asp-for="Input.Username" class="form-control" autocomplete="" placeholder="Username" />
+                        <label asp-for="Input.Username" class="ms-2 text-muted">Username</label>
                         <span asp-validation-for="Input.Username" class="text-danger"></span>
                     </div>
 
@@ -138,15 +131,11 @@
 </div>
 
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-   
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.7/jquery.inputmask.min.js"></script>
     <script>
-
         // Ajax for validation
         $(document).ready(function () {
-
             $('#Input_CustHomePhone').inputmask("(999) 999-9999");
             $('#Input_CustBusPhone').inputmask("(999) 999-9999");
             $('#Input_CustPostal').inputmask("A9A 9A9");
@@ -162,7 +151,6 @@
                 var passwordValid = password && confirmPassword && password === confirmPassword;
                 var postalCodeValid = postalCodePattern.test(postalCode);
                 var phoneValid = phonePattern.test(phoneNumber);
-
 
                 if (passwordValid) {
                     $('#req-password').hide();
