@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Net;
 using System.Security.Claims;
 using TravelExperts.DataAccess.Models;
+using TravelExperts.DataAccess.Service;
 using TravelExperts.DataAccess.Service.IService;
 using TravelExperts.Models.ViewModel;
 using TravelExperts.Utils;
@@ -182,6 +183,10 @@ namespace TravelExperts.Controllers
                 Customers = _unitOfWork.Customers.GetAccount(customerId),
                 Bookings = await _unitOfWork.Bookings.GetOrderHistory(customerId)
             };
+            foreach (var account in accountHistoryVM.Bookings)
+            {
+                ViewBag.TotalPrice += _unitOfWork.Packages.GetPackagePrice((int)account.PackageId);
+            }
 
             return View(accountHistoryVM);
         }

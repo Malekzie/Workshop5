@@ -24,5 +24,6 @@ namespace TravelExperts.DataAccess.Models
 
         [Required(ErrorMessage = "Package ID is required")]
         public int? PackageId { get; set; }
+        
     }
 }

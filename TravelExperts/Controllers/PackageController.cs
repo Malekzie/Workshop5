@@ -95,7 +95,7 @@ namespace TravelExperts.Controllers
 
                 _unitOfWork.Bookings.Add(newBooking);
                 await _unitOfWork.Save();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("History", "Account");
             }
             catch
             {
