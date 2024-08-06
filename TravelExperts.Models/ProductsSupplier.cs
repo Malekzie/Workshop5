@@ -13,8 +13,6 @@ namespace TravelExperts.DataAccess.Models
 
         public int? SupplierId { get; set; }
 
-        public virtual ICollection<PackagesProductsSupplier> PackagesProductsSuppliers { get; set; } = new List<PackagesProductsSupplier>();
-
         public virtual Product Product { get; set; }
 
         public virtual Supplier Supplier { get; set; }
