@@ -20,9 +20,9 @@ namespace TravelExperts.Utils
         {
             return new List<TripType>
             {
-                new TripType { ID = "B", TripTypeName = "Business" },
-                new TripType { ID = "L", TripTypeName = "Leisure" },
-                new TripType { ID = "G", TripTypeName = "Group" }
+                new TripType { TripTypeId = "B", Ttname = "Business" },
+                new TripType { TripTypeId = "L", Ttname = "Leisure" },
+                new TripType { TripTypeId = "G", Ttname = "Group" }
             };
         }
 
