@@ -9,7 +9,7 @@ public partial class Booking
 
     public DateTime? BookingDate { get; set; }
 
-    public string BookingNo { get; set; }
+    public string? BookingNo { get; set; }
 
     public double? TravelerCount { get; set; }
 
@@ -19,7 +19,7 @@ public partial class Booking
 
     public int? PackageId { get; set; }
 
-    public virtual Package Package { get; set; }
+    public virtual Package? Package { get; set; }
 
-    public virtual TripType TripType { get; set; }
+    public virtual TripType? TripType { get; set; }
 }

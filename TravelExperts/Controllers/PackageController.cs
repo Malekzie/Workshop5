@@ -58,7 +58,6 @@ namespace TravelExperts.Controllers
                 Booking = new Booking { PackageId = packageId }
             };
 
-            ViewData["Title"] = "Buy package";
             return View(viewModel);
         }
 

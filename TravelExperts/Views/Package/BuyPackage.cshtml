@@ -8,7 +8,7 @@
 {
 <main class="glass">
 
-    <h1>Purchase package</h1>
+    <h1>Purchase Package</h1>
     <hr />
     <div class="row">
         <div class="col-md-4">
@@ -28,7 +28,7 @@
                 <br />
                 <div class="form-group">
                     <label asp-for="Booking.TripTypeId" class="control-label">Please select your trip type</label>
-                    <select asp-for="Booking.TripTypeId" class="form-control" asp-items="@(new SelectList(Model.TripTypes, "ID", "TripTypeName"))">
+                    <select asp-for="Booking.TripTypeId" class="form-control" asp-items="@(new SelectList(Model.TripTypes, "TripTypeId", "Ttname"))">
                         <option value="">--Select Trip Type--</option>
                     </select>
                     <span asp-validation-for="Booking.TripTypeId" class="text-danger"></span>
