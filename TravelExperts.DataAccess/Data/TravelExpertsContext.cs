@@ -98,7 +98,7 @@ public partial class TravelExpertsContext : DbContext
                 .HasMaxLength(2);
             entity.Property(e => e.Password)
                 .IsRequired()
-                .HasMaxLength(20);
+                .HasMaxLength(256);
             entity.Property(e => e.Username).HasMaxLength(255);
         });
 

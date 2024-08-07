@@ -2,6 +2,7 @@
 global using TravelExperts.DataAccess.Repository.IRepository;
 global using System;
 global using System.Collections.Generic;
+global using Microsoft.AspNetCore.Identity;
 
 global using Microsoft.EntityFrameworkCore;
 global using TravelExperts.DataAccess.Repository;

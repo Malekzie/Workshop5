@@ -6,16 +6,19 @@ using TravelExperts.DataAccess.Service.IService;
 using TravelExperts.Models.ViewModel;
 using TravelExperts.Utils;
 using TravelExperts.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace TravelExperts.Controllers
 {
     public class AuthController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly PasswordHasher<Customer> _passwordHasher;
 
         public AuthController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
+            _passwordHasher = new PasswordHasher<Customer>();
         }
 
         public IActionResult Login() => View();
@@ -101,7 +104,8 @@ namespace TravelExperts.Controllers
                         return View(model);
                     }
 
-                    var customer = new Customer
+
+                    var customerEntry = new Customer
                     {
                         CustFirstName = model.Input.CustFirstName,
                         CustLastName = model.Input.CustLastName,
@@ -114,10 +118,12 @@ namespace TravelExperts.Controllers
                         CustBusPhone = model.Input.CustBusPhone,
                         CustEmail = model.Input.Email,
                         Username = model.Input.Username,
-                        Password = model.Input.Password
                     };
 
-                    _unitOfWork.Customers.RegisterCustomer(customer);
+                    var hashedPassword = _passwordHasher.HashPassword(customerEntry, model.Input.Password);
+                    customerEntry.Password = hashedPassword;
+
+                    _unitOfWork.Customers.RegisterCustomer(customerEntry);
                     _unitOfWork.Save();
 
                     return RedirectToAction("Login", "Auth");

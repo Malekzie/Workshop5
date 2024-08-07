@@ -5,11 +5,12 @@ namespace TravelExperts.DataAccess.Service
     {
         // DB context
         private readonly TravelExpertsContext _context;
+        private readonly PasswordHasher<Customer> _passwordHasher;
         public UnitOfWork(TravelExpertsContext context)
         {
             _context = context;
             Packages =  new PackageService(_context);
-            Customers = new CustomerService(_context);
+            Customers = new CustomerService(_context, _passwordHasher);
             Products = new ProductsService(_context);
             ProductsSuppliers = new ProductsSupplierService(_context);
             Suppliers = new SupplierService(_context);

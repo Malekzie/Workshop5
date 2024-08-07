@@ -1,13 +1,16 @@
 ﻿
 
+
 namespace TravelExperts.DataAccess.Service
 {
     public class CustomerService : Service<Customer>, ICustomerService
     {
         private readonly TravelExpertsContext _context;
-        public CustomerService(TravelExpertsContext context) : base(context)
+        private readonly PasswordHasher<Customer> _passwordHasher;
+        public CustomerService(TravelExpertsContext context, PasswordHasher<Customer> passwordHasher) : base(context)
         {
             _context = context;
+            _passwordHasher = new PasswordHasher<Customer>();
         }
 
         public void RegisterCustomer(Customer customer)
@@ -29,9 +32,23 @@ namespace TravelExperts.DataAccess.Service
 
         public async Task<Customer> ValidateCustomer(string username, string password)
         {
-            var customer = await _context.Customers.FirstOrDefaultAsync(c => c.Username == username && c.Password == password);
+            var customer = await _context.Customers.FirstOrDefaultAsync(c => c.Username == username);
+
+            if (customer == null)
+            {
+                return null;
+            }
+
+            var passwordVerificationResult = _passwordHasher.VerifyHashedPassword(customer, customer.Password, password);
+
+            if (passwordVerificationResult == PasswordVerificationResult.Failed)
+            {
+                return null;
+            }
+
             return customer;
         }
+
 
 
     }
