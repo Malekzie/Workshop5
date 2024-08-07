@@ -3,12 +3,8 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
-using TravelExperts.DataAccess.Models;
-using TravelExperts.Models;
 
-
-
-namespace TravelExperts.DataAccess.Data;
+namespace TravelExperts.DataAccess.Models;
 
 public partial class TravelExpertsContext : DbContext
 {
@@ -17,11 +13,9 @@ public partial class TravelExpertsContext : DbContext
     {
     }
 
-    public virtual DbSet<User> Users { get; set; }
+    public virtual DbSet<Booking> Bookings { get; set; }
 
     public virtual DbSet<Customer> Customers { get; set; }
-
-    public virtual DbSet<Booking> Bookings { get; set; }
 
     public virtual DbSet<Package> Packages { get; set; }
 
@@ -31,19 +25,49 @@ public partial class TravelExpertsContext : DbContext
 
     public virtual DbSet<Supplier> Suppliers { get; set; }
 
+    public virtual DbSet<TripType> TripTypes { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-     
+        modelBuilder.Entity<Booking>(entity =>
+        {
+            entity.HasKey(e => e.BookingId)
+                .HasName("aaaaaBookings_PK")
+                .IsClustered(false);
+
+            entity.HasIndex(e => e.CustomerId, "BookingsCustomerId");
+
+            entity.HasIndex(e => e.CustomerId, "CustomersBookings");
+
+            entity.HasIndex(e => e.PackageId, "PackageId");
+
+            entity.HasIndex(e => e.PackageId, "PackagesBookings");
+
+            entity.HasIndex(e => e.TripTypeId, "TripTypesBookings");
+
+            entity.Property(e => e.BookingDate).HasColumnType("datetime");
+            entity.Property(e => e.BookingNo).HasMaxLength(50);
+            entity.Property(e => e.PackageId).HasDefaultValue(0);
+            entity.Property(e => e.TripTypeId).HasMaxLength(1);
+
+            entity.HasOne(d => d.Package).WithMany(p => p.Bookings)
+                .HasForeignKey(d => d.PackageId)
+                .HasConstraintName("Bookings_FK01");
+
+            entity.HasOne(d => d.TripType).WithMany(p => p.Bookings)
+                .HasForeignKey(d => d.TripTypeId)
+                .HasConstraintName("Bookings_FK02");
+        });
+
         modelBuilder.Entity<Customer>(entity =>
         {
-
-            entity.ToTable("Customers");
-
             entity.HasKey(e => e.CustomerId)
                 .HasName("aaaaaCustomers_PK")
                 .IsClustered(false);
 
             entity.HasIndex(e => e.AgentId, "EmployeesCustomers");
+
+            entity.HasIndex(e => e.Username, "UQ__Customer__536C85E491D2EC7B").IsUnique();
 
             entity.Property(e => e.CustAddress)
                 .IsRequired()
@@ -54,14 +78,15 @@ public partial class TravelExpertsContext : DbContext
             entity.Property(e => e.CustCity)
                 .IsRequired()
                 .HasMaxLength(50);
-            entity.Property(e => e.CustCountry).HasMaxLength(25);
+            entity.Property(e => e.CustCountry)
+                .HasMaxLength(25);
             entity.Property(e => e.CustEmail)
-                .IsRequired()
                 .HasMaxLength(50);
             entity.Property(e => e.CustFirstName)
                 .IsRequired()
                 .HasMaxLength(25);
-            entity.Property(e => e.CustHomePhone).HasMaxLength(20);
+            entity.Property(e => e.CustHomePhone)
+                .HasMaxLength(20);
             entity.Property(e => e.CustLastName)
                 .IsRequired()
                 .HasMaxLength(25);
@@ -71,28 +96,10 @@ public partial class TravelExpertsContext : DbContext
             entity.Property(e => e.CustProv)
                 .IsRequired()
                 .HasMaxLength(2);
-        });
-
-        modelBuilder.Entity<User>(entity =>
-        {
-            entity.ToTable("User");
-
-            entity.Property(e => e.Username)
-                .IsRequired()
-                .HasMaxLength(30);
-
             entity.Property(e => e.Password)
                 .IsRequired()
-                .HasMaxLength(30);
-
-            entity.HasOne(d => d.Customer)
-                .WithMany(p => p.Users)
-                .HasForeignKey(d => d.CustomerId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_User_Customer");
-
-            entity.HasIndex(e => e.Username)
-               .IsUnique();
+                .HasMaxLength(20);
+            entity.Property(e => e.Username).HasMaxLength(255);
         });
 
         modelBuilder.Entity<Package>(entity =>
@@ -164,6 +171,18 @@ public partial class TravelExpertsContext : DbContext
             entity.HasIndex(e => e.SupplierId, "SupplierId");
 
             entity.Property(e => e.SupName).HasMaxLength(255);
+        });
+
+        modelBuilder.Entity<TripType>(entity =>
+        {
+            entity.HasKey(e => e.TripTypeId)
+                .HasName("aaaaaTripTypes_PK")
+                .IsClustered(false);
+
+            entity.Property(e => e.TripTypeId).HasMaxLength(1);
+            entity.Property(e => e.Ttname)
+                .HasMaxLength(25)
+                .HasColumnName("TTName");
         });
 
         OnModelCreatingPartial(modelBuilder);
