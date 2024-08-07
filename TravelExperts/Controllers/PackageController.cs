@@ -88,7 +88,7 @@ namespace TravelExperts.Controllers
                     BookingDate = DateTime.Now,
                     BookingNo = BookingUtil.GenerateBookingNumber(),
                     TravelerCount = model.Booking.TravelerCount,
-                    CustomerId = customerId, // Set CustomerId from claims
+                    CustomerId = customerId,
                     TripTypeId = model.Booking.TripTypeId,
                     PackageId = model.PackageId
                 };
