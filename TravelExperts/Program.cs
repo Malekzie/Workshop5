@@ -1,9 +1,8 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
-using TravelExperts.DataAccess.Data;
-using TravelExperts.DataAccess.Repository.IRepository;
 using TravelExperts.DataAccess.Service.IService;
 using TravelExperts.DataAccess.Service;
+using TravelExperts.DataAccess.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
