@@ -13606,12 +13606,3 @@ th {
 .card .h6 {
     color: inherit;
 }
-
-.glass {
-    background: rgba(0,0,0,0);
-    -webkit-backdrop-filter: blur(10px);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(0,0,0,0);
-    padding: 2rem;
-    border-radius: 2rem;
-}
