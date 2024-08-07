@@ -77,14 +77,14 @@
                     <!-- Phone -->
                     <div class="form-floating mb-3 col-6">
                         <input asp-for="Input.CustBusPhone" class="form-control" placeholder="Phone" />
-                        <label asp-for="Input.CustBusPhone" class="ms-2 text-muted">Business Phone  <span class="text-danger">*</span></label>
+                        <label asp-for="Input.CustBusPhone" class="ms-2 text-muted">Business Phone</label>
                         <span asp-validation-for="Input.CustBusPhone" class="text-danger"></span>
                     </div>
 
                     <!-- Home Phone -->
                     <div class="form-floating mb-3 col-6">
                         <input asp-for="Input.CustHomePhone" class="form-control" placeholder="Home Phone" />
-                        <label asp-for="Input.CustHomePhone" class="ms-2 text-muted">Home Phone</label>
+                        <label asp-for="Input.CustHomePhone" class="ms-2 text-muted">Home Phone <span class="text-danger">*</span></label>
                         <span asp-validation-for="Input.CustHomePhone" class="text-danger"></span>
                     </div>
 
