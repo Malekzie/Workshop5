@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 using System.Security.Claims;
 using TravelExperts.DataAccess.Models;
 using TravelExperts.DataAccess.Service.IService;
+using TravelExperts.Models;
 using TravelExperts.Models.ViewModel;
 using TravelExperts.Utils;
 
@@ -130,18 +132,42 @@ namespace TravelExperts.Controllers
 
                 var customerId = int.Parse(customerIdClaim.Value);
 
+                var customer = _unitOfWork.Customers.GetAccount(customerId);
+                var bookings = await _unitOfWork.Bookings.GetOrderHistory(customerId);
+
+                if (customer == null || bookings == null)
+                {
+                    return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+                }
+
                 var accountHistoryVM = new AccountHistoryVM
                 {
-                    Customers = _unitOfWork.Customers.GetAccount(customerId),
-                    Bookings = await _unitOfWork.Bookings.GetOrderHistory(customerId)
+                    Customers = customer,
+                    Bookings = bookings
                 };
 
-                ViewBag.TotalPrice = accountHistoryVM.Bookings.Sum(account => _unitOfWork.Packages.GetPackagePrice((int)account.PackageId));
+                // Create a dictionary to store package prices by package ID
+                var packagePrices = new Dictionary<int, decimal>();
+                var packageNames = new Dictionary<int, string>();
 
-                for (int i = 1; i <= 4; i++)
+                decimal totalPrice = 0;
+                foreach (var booking in bookings)
                 {
-                    ViewBag[$"Package{i}Price"] = _unitOfWork.Packages.GetPackagePrice(i);
+                    var package = await _unitOfWork.Packages.GetByIdAsync(booking.PackageId);
+                    if (package != null)
+                    {
+                        if (!packagePrices.ContainsKey(booking.PackageId))
+                        {
+                            packagePrices[booking.PackageId] = package.PkgBasePrice;
+                            packageNames[booking.PackageId] = package.PkgName;
+                        }
+                        totalPrice += package.PkgBasePrice; // Assuming PkgBasePrice is nullable
+                    }
                 }
+
+                ViewBag.TotalPrice = totalPrice;
+                ViewBag.PackagePrices = packagePrices;
+                ViewBag.PackageNames = packageNames;
 
                 return View(accountHistoryVM);
             }
@@ -149,9 +175,11 @@ namespace TravelExperts.Controllers
             {
                 // Log the exception (logging not implemented here for simplicity)
                 ModelState.AddModelError("", "An error occurred while loading the order history.");
-                return View("Error");
+                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
             }
         }
+
+
 
         public async Task<IActionResult> EditAccount()
         {

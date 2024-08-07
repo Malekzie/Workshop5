@@ -17,7 +17,7 @@ public partial class Booking
 
     public string TripTypeId { get; set; }
 
-    public int? PackageId { get; set; }
+    public int PackageId { get; set; }
 
     public virtual Package? Package { get; set; }
 
