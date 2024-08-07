@@ -13,7 +13,16 @@
             <label asp-for="@Model.Email">Email</label>
             <span asp-validation-for="@Model.Email" class="text-danger"></span>
         </div>
+    </div>    
+    
+    <div class="col-md-6">
+        <div class="form-floating mb-3">
+            <input asp-for="@Model.Username" class="form-control" placeholder="Email" />
+            <label asp-for="@Model.Username">Username</label>
+            <span asp-validation-for="@Model.Username" class="text-danger"></span>
+        </div>
     </div>
+
 
     <div class="col-md-6">
         <div class="form-floating mb-3">

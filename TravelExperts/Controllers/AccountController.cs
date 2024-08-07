@@ -201,7 +201,8 @@ namespace TravelExperts.Controllers
 
                 var model = new CredentialsVM
                 {
-                    Email = customer.CustEmail
+                    Email = customer.CustEmail,
+                    Username = customer.Username
                 };
 
                 return View(model);
@@ -242,6 +243,7 @@ namespace TravelExperts.Controllers
                 // Update email and password
                 customer.CustEmail = model.Email;
                 customer.Password = model.Password;
+                customer.Username = model.Username;
 
                 _unitOfWork.Customers.Update(customer);
                 await _unitOfWork.Save();
