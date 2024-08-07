@@ -1,35 +1,25 @@
 ﻿using System;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
 
-namespace TravelExperts.DataAccess.Models
+namespace TravelExperts.DataAccess.Models;
+
+public partial class Booking
 {
-    public partial class Booking
-    {
-        [Key]
-        public int BookingId { get; set; }
+    public int BookingId { get; set; }
 
-        [DisplayName("Date Booked")]
-        public DateTime? BookingDate { get; set; }
+    public DateTime? BookingDate { get; set; }
 
-        [DisplayName("Booking Number")]
-        public string? BookingNo { get; set; }
+    public string BookingNo { get; set; }
 
-        [DisplayName("Traveler Count")]
-        [Required(ErrorMessage = "Traveler count is required")]
-        [Range(1, double.MaxValue, ErrorMessage = "Traveler count must be at least 1.")]
-        public double? TravelerCount { get; set; }
+    public double? TravelerCount { get; set; }
 
-        public int? CustomerId { get; set; }
+    public int? CustomerId { get; set; }
 
-        [DisplayName("Trip Type")]
-        [StringLength(1)]
-        [Required(ErrorMessage = "Trip type is required")]
-        public string? TripTypeId { get; set; }
+    public string TripTypeId { get; set; }
 
-        [DisplayName("Package ID")]
-        [Required(ErrorMessage = "Package ID is required")]
-        public int? PackageId { get; set; }
-        
-    }
+    public int? PackageId { get; set; }
+
+    public virtual Package Package { get; set; }
+
+    public virtual TripType TripType { get; set; }
 }

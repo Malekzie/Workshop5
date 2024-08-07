@@ -1,21 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace TravelExperts.DataAccess.Models
+namespace TravelExperts.DataAccess.Models;
+
+public partial class TripType
 {
-    public class TripType
-    {
+    public string TripTypeId { get; set; }
 
-        [StringLength(1)]
-        public string ID { get; set; }
+    public string Ttname { get; set; }
 
-        [StringLength(20)]
-        public string TripTypeName { get; set; }
-    }
+    public virtual ICollection<Booking> Bookings { get; set; } = new List<Booking>();
 }
-    
-
