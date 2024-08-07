@@ -1,12 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using System.Net;
 using System.Security.Claims;
 using TravelExperts.DataAccess.Models;
-using TravelExperts.DataAccess.Service;
 using TravelExperts.DataAccess.Service.IService;
 using TravelExperts.Models.ViewModel;
 using TravelExperts.Utils;
@@ -35,179 +31,201 @@ namespace TravelExperts.Controllers
         /// </summary>
         public async Task<IActionResult> Index()
         {
-            var customerIdClaim = User.FindFirst("CustomerId");
-            if (customerIdClaim == null)
+            try
             {
-                return RedirectToAction("Login", "Account");
+                var customerIdClaim = User.FindFirst("CustomerId");
+                if (customerIdClaim == null)
+                {
+                    return RedirectToAction("Login", "Auth");
+                }
+
+                var customerId = int.Parse(customerIdClaim.Value);
+                var customer = await _unitOfWork.Customers.GetByIdAsync(customerId);
+
+                if (customer == null)
+                {
+                    return NotFound("Customer not found.");
+                }
+
+                var accountVM = new AccountVM
+                {
+                    FirstName = customer.CustFirstName,
+                    LastName = customer.CustLastName,
+                    BusinessPhone = customer.CustBusPhone,
+                    HomePhone = customer.CustHomePhone,
+                    Address = customer.CustAddress,
+                    City = customer.CustCity,
+                    Province = customer.CustProv,
+                    PostalCode = customer.CustPostal,
+                    Country = customer.CustCountry,
+                };
+
+                return View(accountVM);
             }
-
-            var customerId = int.Parse(customerIdClaim.Value);
-            var customer = await _unitOfWork.Users.GetCustomerByID(customerId);
-
-            if (customer == null)
+            catch (Exception ex)
             {
-                return NotFound("Customer not found.");
+                // Log the exception (logging not implemented here for simplicity)
+                ModelState.AddModelError("", "An error occurred while loading the account details.");
+                return View("Error");
             }
-
-            var accountVM = new AccountVM
-            {
-                FirstName = customer.CustFirstName,
-                LastName = customer.CustLastName,
-                BusinessPhone = customer.CustBusPhone,
-                HomePhone = customer.CustHomePhone,
-                Address = customer.CustAddress,
-                City = customer.CustCity,
-                Province = customer.CustProv,
-                PostalCode = customer.CustPostal,
-                Country = customer.CustCountry,
-            };
-
-            return View(accountVM);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Details(AccountVM model)
         {
-            if (!ModelState.IsValid)
+            try
             {
+                if (!ModelState.IsValid)
+                {
+                    return View(model);
+                }
+
+                var customerIdClaim = User.FindFirst("CustomerId");
+                if (customerIdClaim == null)
+                {
+                    return RedirectToAction("Login", "Auth");
+                }
+
+                var customerId = int.Parse(customerIdClaim.Value);
+                var customer = await _unitOfWork.Customers.GetByIdAsync(customerId);
+
+                if (customer == null)
+                {
+                    return NotFound("Customer not found.");
+                }
+
+                customer.CustFirstName = model.FirstName;
+                customer.CustLastName = model.LastName;
+                customer.CustBusPhone = model.BusinessPhone;
+                customer.CustHomePhone = model.HomePhone;
+                customer.CustAddress = model.Address;
+                customer.CustCity = model.City;
+                customer.CustProv = model.Province;
+                customer.CustPostal = model.PostalCode;
+                customer.CustCountry = model.Country;
+
+                _unitOfWork.Customers.Update(customer);
+                await _unitOfWork.Save();
+
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                // Log the exception (logging not implemented here for simplicity)
+                ModelState.AddModelError("", "An error occurred while updating the account details.");
                 return View(model);
             }
-
-            var customerIdClaim = User.FindFirst("CustomerId");
-            if (customerIdClaim == null)
-            {
-                return RedirectToAction("Login", "Account");
-            }
-
-            var customerId = int.Parse(customerIdClaim.Value);
-            var customer = await _unitOfWork.Users.GetCustomerByID(customerId);
-
-            if (customer == null)
-            {
-                return NotFound("Customer not found.");
-            }
-
-            customer.CustFirstName = model.FirstName;
-            customer.CustLastName = model.LastName;
-            customer.CustBusPhone = model.BusinessPhone;
-            customer.CustHomePhone = model.HomePhone;
-            customer.CustAddress = model.Address;
-            customer.CustCity = model.City;
-            customer.CustProv = model.Province;
-            customer.CustPostal = model.PostalCode;
-            customer.CustCountry = model.Country;
-
-            _unitOfWork.Customers.Update(customer);
-            await _unitOfWork.Save();
-
-            return RedirectToAction("Index");
         }
 
- 
         public async Task<IActionResult> History()
         {
-            Claim customerIdClaim = User.FindFirst("CustomerId");
-            if (customerIdClaim == null)
+            try
             {
-                // Handle the case where the customer ID claim is not found
-                return RedirectToAction("Login", "Account");
+                Claim customerIdClaim = User.FindFirst("CustomerId");
+                if (customerIdClaim == null)
+                {
+                    return RedirectToAction("Login", "Auth");
+                }
+
+                var customerId = int.Parse(customerIdClaim.Value);
+
+                var accountHistoryVM = new AccountHistoryVM
+                {
+                    Customers = _unitOfWork.Customers.GetAccount(customerId),
+                    Bookings = await _unitOfWork.Bookings.GetOrderHistory(customerId)
+                };
+
+                ViewBag.TotalPrice = accountHistoryVM.Bookings.Sum(account => _unitOfWork.Packages.GetPackagePrice((int)account.PackageId));
+
+                for (int i = 1; i <= 4; i++)
+                {
+                    ViewBag[$"Package{i}Price"] = _unitOfWork.Packages.GetPackagePrice(i);
+                }
+
+                return View(accountHistoryVM);
             }
-
-            var customerId = int.Parse(customerIdClaim.Value);
-
-            var accountHistoryVM = new AccountHistoryVM
+            catch (Exception ex)
             {
-                Customers = _unitOfWork.Customers.GetAccount(customerId),
-                Bookings = await _unitOfWork.Bookings.GetOrderHistory(customerId)
-            };
-            ViewBag.TotalPrice = new decimal();
-            foreach (var account in accountHistoryVM.Bookings)
-            {
-                ViewBag.TotalPrice += _unitOfWork.Packages.GetPackagePrice((int)account.PackageId);
+                // Log the exception (logging not implemented here for simplicity)
+                ModelState.AddModelError("", "An error occurred while loading the order history.");
+                return View("Error");
             }
-
-            ViewBag.Package1Price = _unitOfWork.Packages.GetPackagePrice(1);
-            ViewBag.Package2Price = _unitOfWork.Packages.GetPackagePrice(2);
-            ViewBag.Package3Price = _unitOfWork.Packages.GetPackagePrice(3);
-            ViewBag.Package4Price = _unitOfWork.Packages.GetPackagePrice(4);
-
-            return View(accountHistoryVM);
         }
 
         public async Task<IActionResult> EditAccount()
         {
-            var customerIdClaim = User.FindFirst("CustomerId");
-            if (customerIdClaim == null)
+            try
             {
-                return RedirectToAction("Login", "Auth");
+                var customerIdClaim = User.FindFirst("CustomerId");
+                if (customerIdClaim == null)
+                {
+                    return RedirectToAction("Login", "Auth");
+                }
+
+                var customerId = int.Parse(customerIdClaim.Value);
+                var customer = await _unitOfWork.Customers.GetByIdAsync(customerId);
+
+                if (customer == null)
+                {
+                    return NotFound("Customer not found.");
+                }
+
+                var model = new CredentialsVM
+                {
+                    Email = customer.CustEmail
+                };
+
+                return View(model);
             }
-
-            var userIdClaim = User.FindFirst("UserId");
-            if (userIdClaim == null)
+            catch (Exception ex)
             {
-                return RedirectToAction("Login", "Auth");
+                // Log the exception (logging not implemented here for simplicity)
+                ModelState.AddModelError("", "An error occurred while loading the edit account page.");
+                return View("Error");
             }
-
-            var customerId = int.Parse(customerIdClaim.Value);
-            var userId = int.Parse(userIdClaim.Value);
-            var customer = await _unitOfWork.Customers.GetByIdAsync(customerId);
-            var user = await _unitOfWork.Users.GetByIdAsync(userId);
-
-            if (customer == null || user == null)
-            {
-                return NotFound("Customer or User not found.");
-            }
-
-            var model = new CredentialsVM
-            {
-                Email = customer.CustEmail
-            };
-
-            return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditAccount(CredentialsVM model)
         {
-            if (!ModelState.IsValid)
+            try
             {
+                if (!ModelState.IsValid)
+                {
+                    return View(model);
+                }
+
+                var customerIdClaim = User.FindFirst("CustomerId");
+                if (customerIdClaim == null)
+                {
+                    return RedirectToAction("Login", "Auth");
+                }
+
+                var customerId = int.Parse(customerIdClaim.Value);
+                var customer = await _unitOfWork.Customers.GetByIdAsync(customerId);
+
+                if (customer == null)
+                {
+                    return NotFound("Customer not found.");
+                }
+
+                // Update email and password
+                customer.CustEmail = model.Email;
+                customer.Password = model.Password;
+
+                _unitOfWork.Customers.Update(customer);
+                await _unitOfWork.Save();
+
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+               
+                ModelState.AddModelError("", "An error occurred while updating the account details.");
                 return View(model);
             }
-
-            var customerIdClaim = User.FindFirst("CustomerId");
-            if (customerIdClaim == null)
-            {
-                return RedirectToAction("Login", "Account");
-            }
-
-            var userIdClaim = User.FindFirst("UserId");
-            if (userIdClaim == null)
-            {
-                return RedirectToAction("Login", "Account");
-            }
-
-            var customerId = int.Parse(customerIdClaim.Value);
-            var userId = int.Parse(userIdClaim.Value);
-            var customer = await _unitOfWork.Customers.GetByIdAsync(customerId);
-            var user = await _unitOfWork.Users.GetByIdAsync(userId);
-
-            if (customer == null || user == null)
-            {
-                return NotFound("Customer or User not found.");
-            }
-
-            // Update email
-            customer.CustEmail = model.Email;
-            _unitOfWork.Customers.Update(customer);
-
-            user.Password = model.Password;
-            _unitOfWork.Users.Update(user);
-
-            await _unitOfWork.Save();
-
-            return RedirectToAction("Index");
         }
     }
 }

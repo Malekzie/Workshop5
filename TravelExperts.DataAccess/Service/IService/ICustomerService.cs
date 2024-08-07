@@ -5,8 +5,14 @@ namespace TravelExperts.DataAccess.Repository.IRepository
     {
         // Registers a customer
         void RegisterCustomer(Customer customer);
-
-        // Add more methods here
+        
+        // Gets account information
         Customer GetAccount(int customerId);
+        
+        // Gets customer by username
+        Customer GetCustomerByUsername(string username);
+
+        // Validates Customer
+        Task<Customer> ValidateCustomer(string username, string password);
     }
 }

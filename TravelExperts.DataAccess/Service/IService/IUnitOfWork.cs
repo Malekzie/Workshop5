@@ -10,7 +10,6 @@ namespace TravelExperts.DataAccess.Service.IService
     {
         // Adds all the services to the IUnitOfWork interface
         IBookingService Bookings { get; }
-        IUserService Users { get; }
         ICustomerService Customers { get; }
         IPackageService Packages { get; }
         IProductsService Products { get; }
