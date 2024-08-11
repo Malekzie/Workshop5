@@ -120,7 +120,14 @@ namespace TravelExperts.Controllers
             }
         }
 
-        public async Task<IActionResult> History()
+        /**
+         The history page made use of viewmodels in order to allow multiple database tables to exist
+         in the same model. I did use a viewbag for calculated values to be passed to the page, but
+         from some research it seems that most devs are avoiding viewbag in favour of ensuring all
+         data exists in the viewmodel. While null checks do exist thoughout the code, validation becomes
+         much simpler if the null value is disallowed in the database from the get go. 
+         **/
+        public async Task<IActionResult> History() 
         {
             try
             {

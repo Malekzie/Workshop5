@@ -1,0 +1,18 @@
+Contribution Breakdown:
+-Order History Page
+-Assisted with Packages Page
+-DBO for order history and packages
+-Testing and bug reporting registration and package purchases
+-Meeting coordination
+-Writing privacy page
+
+The order page and it's database operations were programed and refactored by myself.
+I helped Benjamin with the packages page and with some of the database operations for registration.
+I caught and flagged a few bugs including:
+	-Provinces not loading on post request if registration failed validation.
+	-Purchasing packages through the cards instead of the carousel always redirecting to package 1.
+I also helped to organize meetings and work for the last sprint of the project.
+Lastly I wrote the privacy page blurb.
+
+I've added comments on some of the code I've worked on with some learnings, or some potential spots
+to learn from, where I used a shoddier method and should work on improving in a future project. 

@@ -12,6 +12,7 @@ public partial class Booking
 
     public string? BookingNo { get; set; }
 
+    //Had a few bugs due to TravelerCount actually being a float in the DB. Pretty comical error in retrospect.
     public double? TravelerCount { get; set; }
 
     public int? CustomerId { get; set; }
