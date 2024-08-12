@@ -1,12 +1,17 @@
 ﻿@model TravelExperts.Models.ViewModel.CardVM
 
+<!--Written by Ben Wood, repurposed from Robbie's code-->
+<!--Creates a card for a package that shows a picture and a link to purcase said package-->
 
 <div class="card" style="width: 18rem;">
+    <!--Shows the package image and name-->
     <img src="@Model.ImageUrl" class="card-img-top" alt="@Model.Name">
     <div class="card-body">
+        <!--Links to the buy package page and sends the package id with asp route-->
         <a asp-action="BuyPackage" asp-route-packageId="@Model.Id">
             <h5 class="card-title">@Model.Name</h5>
         </a>
+        <!--Shows the package description-->
         <p class="card-text">@Model.Desc</p>
     </div>
 </div>

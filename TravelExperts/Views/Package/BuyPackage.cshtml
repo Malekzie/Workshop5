@@ -1,8 +1,15 @@
 @model BuyPackageViewModel
 
+<!--Writen by Ben Wood-->
+<!--This page is used to buy a package. It takes in the package id and the traveler 
+count and trip type. It also has a script to ensure that the traveler count is a positive number.-->
+<!--The page also has a button to submit the form and a button to go back to the packages page,-->
+<!--and has a check to see if the trip types are null and if they are it will display an error message.-->
+
 @{
     ViewData["Title"] = "Buy package";
 }
+
 
 @if (Model.TripTypes != null)
 {
@@ -12,20 +19,22 @@
     <hr />
     <div class="row">
         <div class="col-md-4">
+            
             <form asp-action="BuyPackage" method="post">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
+                <!--Hidden values to pass the packageid and booking.package id from the form-->
                 <input type="hidden" asp-for="Booking.PackageId" value="@Model.PackageId" />
                 <input type="hidden" asp-for="PackageId" value="@Model.PackageId" />
 
+                <!--Field for traveler count-->
                 <div class="form-floating mb-3 border border-black">
                     <input asp-for="Booking.TravelerCount" id="TravelerCount" class="form-control" aria-required="true" placeholder="name@example.com" />
                     <label asp-for="Booking.TravelerCount" class="ms-2 text-muted">Please enter your traveler count</label>
                     <span asp-validation-for="Booking.TravelerCount" class="text-danger"></span>
                 </div>
 
-                
                 <br />
+                <!--Field for trip type-->
                 <div class="form-group">
                     <label asp-for="Booking.TripTypeId" class="control-label">Please select your trip type</label>
                     <select asp-for="Booking.TripTypeId" class="form-control" asp-items="@(new SelectList(Model.TripTypes, "TripTypeId", "Ttname"))">
@@ -33,7 +42,10 @@
                     </select>
                     <span asp-validation-for="Booking.TripTypeId" class="text-danger"></span>
                 </div>
+
                 <br />
+
+                <!--Submit button-->
                 <div class="form-group">
                     <input type="submit" value="Buy Package" class="btn btn-primary" />
                     <a asp-action="Index" class="btn btn-warning">Back to packages</a>
@@ -43,11 +55,14 @@
     </div>
 </main>
 }
+
+<!--Error checking-->
 else
 {
     <p>Something went wrong. Please try again later.</p>
 }
 
+<!--Error checking-->
 @if (ViewBag.Errors != null)
 {
     <div class="alert alert-danger">
@@ -60,7 +75,7 @@ else
     </div>
 }
 
-
+<!--Error checking-->
 @section Scripts{
     <script>
         $(document).ready(function () {

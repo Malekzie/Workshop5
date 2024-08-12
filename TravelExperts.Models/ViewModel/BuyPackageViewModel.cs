@@ -1,4 +1,7 @@
-﻿
+﻿//Written by Ben Wood
+//View model for the BuyPackage view
+//Contains the package id, trip types, and booking information
+
 namespace TravelExperts.Models.ViewModel
 {
     public class BuyPackageViewModel

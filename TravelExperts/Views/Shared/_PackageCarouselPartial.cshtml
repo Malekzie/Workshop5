@@ -1,9 +1,13 @@
-﻿
+﻿<!--Written by Ben Wood-->
+<!--Creates a carousel that shows a picture of a package and a link to purchase said package-->
+<!--The carousel will automatically change the image every 5 seconds-->
 
 <div id="carouselExampleAutoplaying" class="carousel slide carousel-fade" data-bs-ride="carousel">
     <div class="carousel-inner">
+
+        <!--All the carousel items-->
+        <!--The first image is set to active so it is the first image shown-->
         <div class="carousel-item active">
-            <!--can use @ViewBag instead of hardcoding id values eventually-->
             <a asp-action="BuyPackage" asp-route-packageId="1">
                 <img src="img/Caribbean3.jpg" class="d-block w-100 rounded-3" alt="...">
             </a>
@@ -24,6 +28,8 @@
             </a>
         </div>
     </div>
+
+    <!--Buttons to move to next carousel items-->
     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Previous</span>

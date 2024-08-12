@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
+//Written by Ben Wood
+//Model for the Package table
+
 namespace TravelExperts.DataAccess.Models;
 
 public partial class Package
